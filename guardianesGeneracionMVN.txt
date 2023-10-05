@@ -1,0 +1,61 @@
+ARQUETIPO MVN PARA LA CREACIÓN DE LA BUSSINES APPLICATION
+GUARDIANES
+
+
+
+DATAMODEL
+https://mvnrepository.com/artifact/org.kie/kie-model-archetype
+ÚLTIMA VERSIÓN DE TIPO FINAL A FECHA 2/10/23 7.74.1
+DATAMODEL PERSONALIZADO
+mvn archetype:generate -B "-DarchetypeGroupId=org.kie" "-DarchetypeArtifactId=kie-model-archetype" "-DarchetypeVersion=7.74.1.Final" "-DgroupId=us.dit" "-DartifactId=guardianes-model" "-Dversion=1.0-SNAPSHOT" "-Dpackage=us.dit.model"
+
+KJAR/BUSINESS ASSETS
+https://mvnrepository.com/artifact/org.kie/kie-kjar-archetype
+ÚLTIMA VERSIÓN DE TIPO FINAL A FECHA 2/10/23 7.74.1
+KJAR PERSONALIZADO
+mvn archetype:generate -B "-DarchetypeGroupId=org.kie" "-DarchetypeArtifactId=kie-kjar-archetype" "-DarchetypeVersion=7.74.1.Final" "-DgroupId=us.dit" "-DartifactId=guardianes-kjar" "-Dversion=1.0-SNAPSHOT" "-Dpackage=us.dit"
+
+SERVICIO
+https://mvnrepository.com/artifact/org.kie/kie-service-spring-boot-archetype
+igual la versión 7.74.1 es la última finla
+BPM
+PERSONALIZADO
+mvn archetype:generate -B "-DarchetypeGroupId=org.kie" "-DarchetypeArtifactId=kie-service-spring-boot-archetype" "-DarchetypeVersion=7.74.1.Final" "-DgroupId=us.dit" "-DartifactId=guardianes-service" "-Dversion=1.0-SNAPSHOT" "-Dpackage=us.dit.service" "-DappType=bpm"
+
+Por ahora no uso:
+DROOLS
+mvn archetype:generate -B "-DarchetypeGroupId=org.kie" "-DarchetypeArtifactId=kie-service-spring-boot-archetype" "-DarchetypeVersion=7.67.0.Final" "-DgroupId=com.company" "-DartifactId=business-application-service" "-Dversion=1.0-SNAPSHOT" "-Dpackage=com.company.service" "-DappType=brm"
+
+PLANNING
+mvn archetype:generate -B "-DarchetypeGroupId=org.kie" "-DarchetypeArtifactId=kie-service-spring-boot-archetype" "-DarchetypeVersion=7.67.0.Final" "-DgroupId=com.company" "-DartifactId=business-application-service" "-Dversion=1.0-SNAPSHOT" "-Dpackage=com.company.service" "-DappType=planner"
+
+NOTAS CREACIÓN DESDE CERO
+Uso la versión 7.74.1.Final
+No me encuentra la clase main en el manifiesto y por eso añado al pom del servicio:
+ <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.3.0</version>
+		<configuration>  
+                <archive>  
+                    <manifest>  
+                        <mainClass>us.dit.holamundo.service.Application</mainClass>  
+                    </manifest>  
+                </archive>  
+            </configuration>  
+		</plugin>
+Con esto ya sí que encuentra el main, pero da un error con spring, para arreglarlo añado
+<parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.1.4</version>
+    <relativePath/> <!-- lookup parent from repository -->
+</parent>
+Al pom
+¡¡Pero resulta que esta es la última versión de spring y no entiende la configuración se seguridad que se ha generado!!
+Así que la bajo, y la pongo igual que la tenía Jose Antonio
+la versión 
+<version>2.3.4.RELEASE</version>
+
+
+

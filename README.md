@@ -1,1 +1,1 @@
-# GuardianesBA
+# Este proyecto es una aplicación de negocios jBPM con Spring Boot
