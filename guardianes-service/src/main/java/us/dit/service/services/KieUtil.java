@@ -10,7 +10,11 @@ import org.kie.server.client.ProcessServicesClient;
 import org.kie.server.client.QueryServicesClient;
 import org.kie.server.client.UserTaskServicesClient;
 import org.springframework.beans.factory.annotation.Value;
-
+/**
+ * Esta clase debe contener los servicios que proporcionan capacidades para interaccionar con el kie server
+ * Debe ser el único responsable de estos aspectos, liberando a los demás de esta necesidad
+ * Debería ser un Bean, un componente spring, para poder inyectarlo en todos aquellos que lo necesiten, especialmente servicios
+ */
 public class KieUtil {
 
 	@Value("${kieserver.location}")
@@ -18,7 +22,7 @@ public class KieUtil {
 	private static final Logger logger = LogManager.getLogger();
 	private String USERNAME;
 	private String PASSWORD;
-	
+
 	private KieServicesConfiguration config;
 
 	public KieUtil(String uRL, String uSERNAME, String pASSWORD) {
@@ -26,11 +30,13 @@ public class KieUtil {
 		USERNAME = uSERNAME;
 		PASSWORD = pASSWORD;
 	}
+
 	public KieUtil(String uSERNAME, String pASSWORD) {
 		logger.info("creando kieutil");
 		USERNAME = uSERNAME;
 		PASSWORD = pASSWORD;
 	}
+
 	public ProcessServicesClient getProcessServicesClient() {
 		logger.info("getprocessservicesclient");
 		KieServicesClient kieServicesClient = getKieServicesClient();
@@ -38,27 +44,27 @@ public class KieUtil {
 		logger.info("salgo de getprocessservicesclient");
 		return processServicesClient;
 	}
-	
+
 	public UserTaskServicesClient getUserTaskServicesClient() {
 		KieServicesClient kieServicesClient = getKieServicesClient();
 		UserTaskServicesClient userClient = kieServicesClient.getServicesClient(UserTaskServicesClient.class);
-		
+
 		return userClient;
 	}
-	
+
 	public QueryServicesClient getQueryServicesClient() {
 		KieServicesClient kieServicesClient = getKieServicesClient();
 		QueryServicesClient queryClient = kieServicesClient.getServicesClient(QueryServicesClient.class);
-		
+
 		return queryClient;
 	}
 
 	private KieServicesClient getKieServicesClient() {
-		logger.info("entro en getkieservicesclient con url "+URL);
+		logger.info("entro en getkieservicesclient con url " + URL);
 		config = KieServicesFactory.newRestConfiguration(URL, USERNAME, PASSWORD);
 		logger.info("salgo de newrestconfigurarion");
 		config.setMarshallingFormat(MarshallingFormat.JSON);
-		
+
 		return KieServicesFactory.newKieServicesClient(config);
 	}
 

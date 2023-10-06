@@ -1,6 +1,5 @@
 package us.dit.service.controllers;
 
-
 import javax.servlet.http.HttpSession;
 
 //import jakarta.servlet.http.HttpSession;
@@ -14,9 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import us.dit.service.services.HolaService;
-
 
 /**
  * 
@@ -25,20 +22,20 @@ import us.dit.service.services.HolaService;
 @RequestMapping("/procesohola")
 public class HolaController {
 	private static final Logger logger = LogManager.getLogger();
-	
+
 	@Autowired
 	private HolaService hola;
+
 	@GetMapping("/nuevo")
 	@ResponseBody
 	public String nuevoproceso(HttpSession session) {
 		logger.info("ejecutando nuevoproceso");
-	//	User user = (User) session.getAttribute("user");
-		logger.info("Atributos de sesion "+session.getAttributeNames());
-		
-		
-		Long idInstancia=hola.nuevaInstancia("wbadmin","wbadmin");
+		// User user = (User) session.getAttribute("user");
+		logger.info("Atributos de sesion " + session.getAttributeNames());
+
+		Long idInstancia = hola.nuevaInstancia("wbadmin", "wbadmin");
 		logger.info("vuelve de la invocación nueva instancia");
-		return " Instancia: "+idInstancia.toString();
+		return " Instancia: " + idInstancia.toString();
 	}
 
 }
