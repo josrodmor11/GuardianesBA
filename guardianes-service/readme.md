@@ -1,5 +1,4 @@
 # Servicio Guardianes
-=============================
 Guardianes es la aplicación de negocio del proyecto Guardianes
 ## Tecnologías
 Utiliza Spring boot 2 y jBPM (kie server 7.74.1.Final
