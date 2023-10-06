@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
  * Debe ser el único responsable de estos aspectos, liberando a los demás de esta necesidad
  * Debería ser un Bean, un componente spring, para poder inyectarlo en todos aquellos que lo necesiten, especialmente servicios
  */
-public class KieUtil {
+public class KieUtil implements KieUtilService {
 
 	@Value("${kieserver.location}")
 	private String URL;
@@ -37,6 +37,7 @@ public class KieUtil {
 		PASSWORD = pASSWORD;
 	}
 
+	@Override
 	public ProcessServicesClient getProcessServicesClient() {
 		logger.info("getprocessservicesclient");
 		KieServicesClient kieServicesClient = getKieServicesClient();
@@ -45,6 +46,7 @@ public class KieUtil {
 		return processServicesClient;
 	}
 
+	@Override
 	public UserTaskServicesClient getUserTaskServicesClient() {
 		KieServicesClient kieServicesClient = getKieServicesClient();
 		UserTaskServicesClient userClient = kieServicesClient.getServicesClient(UserTaskServicesClient.class);
@@ -52,6 +54,7 @@ public class KieUtil {
 		return userClient;
 	}
 
+	@Override
 	public QueryServicesClient getQueryServicesClient() {
 		KieServicesClient kieServicesClient = getKieServicesClient();
 		QueryServicesClient queryClient = kieServicesClient.getServicesClient(QueryServicesClient.class);

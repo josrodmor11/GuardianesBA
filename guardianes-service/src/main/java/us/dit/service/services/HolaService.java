@@ -9,12 +9,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-
 public class HolaService {
 	@Value("${kieserver.location}")
 	private String URL;
 	private static final Logger logger = LogManager.getLogger();
-	private KieUtil kie = null;
+	private KieUtilService kie = null;
 
 	public Long nuevaInstancia(String user, String password) {
 		// String contentHtml = null;
