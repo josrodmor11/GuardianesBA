@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.kie.server.api.model.instance.TaskInstance;
 import org.kie.server.api.model.instance.TaskSummary;
 /* https://javadoc.io/doc/org.kie.server/kie-server-api/latest/org/kie/server/api/model/instance/TaskSummary.html */
 import org.kie.server.client.UserTaskServicesClient;
@@ -110,5 +111,20 @@ public class TasksService {
 	 * 
 	 * 
 	 */
+
+	public TaskInstance findById(String user, String pwd, Long taskId) {
+		logger.info("En findAll de TaskService");
+		logger.info("Creando el kieutil con URL " + URL);
+		kie = new KieUtil(URL, user, pwd);
+		logger.info("el kieUTIL creado ok");
+		TaskInstance task = null;
+
+		UserTaskServicesClient client = kie.getUserTaskServicesClient();
+		logger.info("Llamo a findTaskById de UserTaskServicesClient");
+		task = client.findTaskById(taskId);
+		logger.info("Termino findTaskById");
+		
+		return task;
+	}
 
 }
