@@ -34,7 +34,7 @@ public class HolaService {
 
 		ProcessServicesClient processServicesClient = kie.getProcessServicesClient();
 
-		logger.info("Trato de crear proceso holamundo-kjar.holamundo");
+		logger.info("Trato de crear proceso guardianes-kjar.prueba");
 		idInstanceProcess = processServicesClient.startProcess("guardianes-kjar-1.0-SNAPSHOT",
 				"guardianes-kjar.prueba");
 		logger.info("conseguido??? " + idInstanceProcess.toString());

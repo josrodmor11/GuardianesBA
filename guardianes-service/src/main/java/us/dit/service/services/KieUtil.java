@@ -9,12 +9,18 @@ import org.kie.server.client.KieServicesFactory;
 import org.kie.server.client.ProcessServicesClient;
 import org.kie.server.client.QueryServicesClient;
 import org.kie.server.client.UserTaskServicesClient;
+import org.kie.server.client.admin.UserTaskAdminServicesClient;
 import org.springframework.beans.factory.annotation.Value;
+
+//import org.springframework.stereotype.Service;
 /**
- * Esta clase debe contener los servicios que proporcionan capacidades para interaccionar con el kie server
- * Debe ser el único responsable de estos aspectos, liberando a los demás de esta necesidad
- * Debería ser un Bean, un componente spring, para poder inyectarlo en todos aquellos que lo necesiten, especialmente servicios
+ * Esta clase debe contener los servicios que proporcionan capacidades para
+ * interaccionar con el kie server Debe ser el único responsable de estos
+ * aspectos, liberando a los demás de esta necesidad Debería ser un Bean, un
+ * componente spring, para poder inyectarlo en todos aquellos que lo necesiten,
+ * especialmente servicios
  */
+
 public class KieUtil implements KieUtilService {
 
 	@Value("${kieserver.location}")
@@ -60,6 +66,14 @@ public class KieUtil implements KieUtilService {
 		QueryServicesClient queryClient = kieServicesClient.getServicesClient(QueryServicesClient.class);
 
 		return queryClient;
+	}
+
+	@Override
+	public UserTaskAdminServicesClient getUserTaskAdminServicesClient() {
+		KieServicesClient kieServicesClient = getKieServicesClient();
+		UserTaskAdminServicesClient client = kieServicesClient.getServicesClient(UserTaskAdminServicesClient.class);
+
+		return client;
 	}
 
 	private KieServicesClient getKieServicesClient() {

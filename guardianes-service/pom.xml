@@ -83,6 +83,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
+		<!--Para depuración-->
+		<dependency>
+  			<groupId>ch.qos.logback</groupId>
+ 			 <artifactId>logback-classic</artifactId>
+ 		</dependency>
 		<!--
    	<dependency>
     		<groupId>org.springframework.boot</groupId>

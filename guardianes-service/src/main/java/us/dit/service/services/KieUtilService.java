@@ -3,6 +3,7 @@ package us.dit.service.services;
 import org.kie.server.client.ProcessServicesClient;
 import org.kie.server.client.QueryServicesClient;
 import org.kie.server.client.UserTaskServicesClient;
+import org.kie.server.client.admin.UserTaskAdminServicesClient;
 
 public interface KieUtilService {
 
@@ -11,5 +12,7 @@ public interface KieUtilService {
 	UserTaskServicesClient getUserTaskServicesClient();
 
 	QueryServicesClient getQueryServicesClient();
+	
+	UserTaskAdminServicesClient getUserTaskAdminServicesClient();
 
 }
