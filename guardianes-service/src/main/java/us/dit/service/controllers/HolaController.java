@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import us.dit.service.security.ClearPasswordService;
+import us.dit.service.config.ClearPasswordService;
 import us.dit.service.services.HolaService;
 
 /**

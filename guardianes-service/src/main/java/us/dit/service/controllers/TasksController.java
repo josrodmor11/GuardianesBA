@@ -13,12 +13,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+//import org.springframework.web.bind.annotation.ResponseBody;
+//import org.springframework.web.bind.annotation.RestController;
 
-import us.dit.service.security.ClearPasswordService;
+import us.dit.service.config.ClearPasswordService;
 import us.dit.service.services.TasksService;
 
 /**
@@ -35,10 +36,10 @@ public class TasksController {
 	private ClearPasswordService clear;
 
 	@GetMapping
-	@ResponseBody
-	public List<TaskSummary> nuevoproceso(HttpSession session) {
+	public String myTasks(HttpSession session,Model model) {
 		logger.info("buscando todas las tareas del usuario");
 		List<TaskSummary> tasksList = null;
+		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails user = (UserDetails) auth.getPrincipal();
 		logger.info("Datos de usuario " + user);
@@ -50,8 +51,24 @@ public class TasksController {
 		// de usuario clave en claro
 		// Evidentemente será necesario modificar esto en producción
 		tasksList = tasksService.findAll(user.getUsername(), clear.getPwd(user.getUsername()));
+		model.addAttribute("tasks",tasksList);
+		/**
+		 * Ejemplo de datos de una taskSummary devuelta
+		 * TaskSummary{id=2, 
+		 * name='TareaDePrueba', 
+		 * description='', 
+		 * status='Reserved', 
+		 * actualOwner='user', 
+		 * createdBy='', 
+		 * createdOn=Sat Oct 07 13:23:42 CEST 2023, 
+		 * processInstanceId=2, 
+		 * processId='guardianes-kjar.prueba', 
+		 * containerId='guardianes-kjar-1.0-SNAPSHOT', 
+		 * correlationKey=null, 
+		 * processType=null}
+		 */
 		logger.info("vuelve de consultar tareas");
-		return tasksList;
+		return "myTasks";
 	}
 
 }
