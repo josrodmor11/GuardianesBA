@@ -11,6 +11,7 @@ import org.kie.server.client.QueryServicesClient;
 import org.kie.server.client.UserTaskServicesClient;
 import org.kie.server.client.admin.UserTaskAdminServicesClient;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 //import org.springframework.stereotype.Service;
 /**
@@ -22,9 +23,9 @@ import org.springframework.beans.factory.annotation.Value;
  */
 
 public class KieUtil implements KieUtilService {
-
 	@Value("${kieserver.location}")
 	private String URL;
+
 	private static final Logger logger = LogManager.getLogger();
 	private String USERNAME;
 	private String PASSWORD;
@@ -32,13 +33,14 @@ public class KieUtil implements KieUtilService {
 	private KieServicesConfiguration config;
 
 	public KieUtil(String uRL, String uSERNAME, String pASSWORD) {
+		logger.info("Creando el kieutil");
 		URL = uRL;
 		USERNAME = uSERNAME;
 		PASSWORD = pASSWORD;
 	}
 
 	public KieUtil(String uSERNAME, String pASSWORD) {
-		logger.info("creando kieutil");
+		logger.info("creando kieutil con URL "+URL);
 		USERNAME = uSERNAME;
 		PASSWORD = pASSWORD;
 	}

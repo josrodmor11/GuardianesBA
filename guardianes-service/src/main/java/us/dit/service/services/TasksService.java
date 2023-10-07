@@ -24,11 +24,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class TasksService {
+
+	private static final Logger logger = LogManager.getLogger();
 	@Value("${kieserver.location}")
 	private String URL;
-	private static final Logger logger = LogManager.getLogger();
-	private KieUtilService kie = null;
-
 	/**
 	 * Busca todas las tareas de un usuario
 	 * 
@@ -40,8 +39,8 @@ public class TasksService {
 	 */
 	public List<TaskSummary> findAll(String user, String password) {
 		logger.info("En findAll de TaskService");
-		logger.info("Creando el kieutil con URL " + URL);
-		kie = new KieUtil(URL, user, password);
+
+		KieUtilService kie = new KieUtil(URL,user, password);
 		logger.info("el kieUTIL creado ok");
 		List<TaskSummary> taskList = null;
 
@@ -55,11 +54,20 @@ public class TasksService {
 		return taskList;
 	}
 
+	/**
+	 * Busca las tareas asignadas a un usuario que tengan un estado determinado
+	 * 
+	 * @param user
+	 * @param password
+	 * @param state
+	 * @return Listado de TaskSummaries de las tareas asignadas al usuario en el
+	 *         estado indicado como argumento de entrada
+	 */
 	public List<TaskSummary> findByStatus(String user, String password, String state) {
 		List<String> status = new ArrayList<String>();
 		status.add(state);
-		logger.info("Creando el kieutil con URL " + URL);
-		kie = new KieUtil(URL, user, password);
+
+		KieUtilService kie = new KieUtil(URL,user, password);
 		logger.info("el kieUTIL creado ok");
 		List<TaskSummary> taskList = null;
 
@@ -72,6 +80,7 @@ public class TasksService {
 		}
 		return taskList;
 	}
+
 	/**
 	 * status.add("Completed"); status.add("Created"); status.add("Error");
 	 * status.add("Exited"); status.add("Failed"); status.add("InProgress");
@@ -111,20 +120,45 @@ public class TasksService {
 	 * 
 	 * 
 	 */
-
-	public TaskInstance findById(String user, String pwd, Long taskId) {
+	/**
+	 * Devuelve una instancia de tarea (TaskInstance) a partir del identificador de
+	 * la tarea
+	 * 
+	 * @param user
+	 * @param password
+	 * @param taskId
+	 * @return Instancia de la tarea indicada en el argumento de entrada taskId
+	 */
+	public TaskInstance findById(String user, String password, Long taskId) {
 		logger.info("En findAll de TaskService");
-		logger.info("Creando el kieutil con URL " + URL);
-		kie = new KieUtil(URL, user, pwd);
-		logger.info("el kieUTIL creado ok");
+
 		TaskInstance task = null;
 
+		KieUtilService kie = new KieUtil(URL,user, password);
+		logger.info("el kieUTIL creado ok");
 		UserTaskServicesClient client = kie.getUserTaskServicesClient();
 		logger.info("Llamo a findTaskById de UserTaskServicesClient");
 		task = client.findTaskById(taskId);
 		logger.info("Termino findTaskById");
-		
+
 		return task;
+	}
+
+	/**
+	 * Devuelve el conjunto de tareas que el usuario puede reclamar para ejecutar,
+	 * no está terminado OJO ESTE MÉTODO NO ESTÁ PROBADO
+	 * 
+	 * @param user
+	 * @param password
+	 * @return Listado de TaskSummaries de las tareas que cumplen el criterio de
+	 *         búsqueda
+	 */
+	public List<TaskSummary> findTasksPool(String user, String password) {
+		List<TaskSummary> tasks = null;
+		KieUtilService kie = new KieUtil(URL,user, password);
+		UserTaskServicesClient client = kie.getUserTaskServicesClient();
+		client.findTasksAssignedAsPotentialOwner(user, 0, 0);
+		return tasks;
 	}
 
 }

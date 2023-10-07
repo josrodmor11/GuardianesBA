@@ -12,7 +12,7 @@ public interface KieUtilService {
 	UserTaskServicesClient getUserTaskServicesClient();
 
 	QueryServicesClient getQueryServicesClient();
-	
+
 	UserTaskAdminServicesClient getUserTaskAdminServicesClient();
 
 }

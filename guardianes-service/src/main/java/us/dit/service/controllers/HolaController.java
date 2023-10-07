@@ -27,6 +27,7 @@ import us.dit.service.services.HolaService;
 
 /**
  * Controlador ejemplo para arrancar el proceso hola
+ * TIENE QUE DESAPARECER, NO CUMPLE REST, ES SÓLO PARA COMENZAR A TRABAJAR
  */
 @RestController
 @RequestMapping("/procesohola")
