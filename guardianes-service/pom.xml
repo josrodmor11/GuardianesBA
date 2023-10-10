@@ -25,6 +25,7 @@
 	<properties>
 
 		<version.org.kie>7.74.1.Final</version.org.kie>
+		<!-- https://docs.jboss.org/jbpm/release/7.74.1.Final/jbpm-docs/html_single/-->
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -133,6 +134,15 @@
 					<groupId>mysql</groupId>
 					<artifactId>mysql-connector-java</artifactId>
 				</dependency>
+				<!-- añadido por mi la de jpa persistence -->
+					<!--
+				<dependency>
+					<groupId>org.drools</groupId>
+					<artifactId>drools-persistence-jpa</artifactId>
+					<version>${version.org.kie}</version>
+				</dependency>
+				-->
+				
 				<dependency>
 					<groupId>com.h2database</groupId>
 					<artifactId>h2</artifactId>
