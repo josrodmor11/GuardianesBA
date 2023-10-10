@@ -14,7 +14,9 @@
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<!-- con la versión 2.7.0, 16 y 15 dan un error al persistir-->
 		<!--La versión 2.6.15 es la más actual con la que he conseguido que vaya bien por ahora
-    versión de fecha 6/10/23-->
+    versión de fecha 6/10/23
+	
+	Referencia de la versión 2.6.15: https://docs.spring.io/spring-boot/docs/2.6.15/reference/htmlsingle/-->
 		<version>2.6.15</version>
 
 		<!--Con esta versión de spring boot, la 2.3.4.RELEASE va todo bien
@@ -89,7 +91,31 @@
   			<groupId>ch.qos.logback</groupId>
  			 <artifactId>logback-classic</artifactId>
  		</dependency>
+		<!-- para usar SSO, la aplicación será un service-provider 
+		Esto está sacado de https://www.baeldung.com/spring-security-saml
+		
+		Y hay más info en:https://spring.io/projects/spring-security-saml#overview
+		Para la versión que se está usando aquí de springboot: https://docs.spring.io/spring-boot/docs/2.6.15/reference/htmlsingle/#web.security.saml2
+		La configuración del IS de WSO2 como identy-provider está en:
+		https://is.docs.wso2.com/en/latest/guides/login/sso-for-saml/
+		https://is.docs.wso2.com/en/latest/sdks/spring-boot/
+		-->
 		<!--
+		<dependency>
+    		<groupId>org.springframework.security</groupId>
+    		<artifactId>spring-security-saml2-service-provider</artifactId>
+		</dependency>
+-->
+		<!--En otra documentación https://www.chakray.com/es/integracion-wso2-identity-server-spring-boot-spring-security-saml/ he encontrado que se usa
+		 
+<dependency>
+    <groupId>org.springframework.security.extensions</groupId>
+    <artifactId>spring-security-saml-dsl-core</artifactId>
+    <version>1.0.5.RELEASE</version>
+</dependency>
+
+		-->
+		<!-- creo que esto es para cuando haya replicación, pero no lo tengo todavía claro
    	<dependency>
     		<groupId>org.springframework.boot</groupId>
     		<artifactId>spring-boot-starter-quartz</artifactId>
