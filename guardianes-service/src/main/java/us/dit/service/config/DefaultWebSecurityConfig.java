@@ -76,11 +76,13 @@ public class DefaultWebSecurityConfig {
 		UserDetails user = User.withUsername("user").password(encoder.encode("user")).roles("kie-server").build();
 		// $2a$12$irR0VcP4SdtvAn7cbnXXQ.Cnfk/NlLWZa4mnx0J8EeXFum8Pt1pfm
 		UserDetails wbadmin = User.withUsername("wbadmin").password(encoder.encode("wbadmin")).roles("admin").build();
+		//Este usuario se va a utilizar para el acceso al servidor
+		UserDetails guardianes = User.withUsername("guardianes").password(encoder.encode("guardianes")).roles("kie-server").build();
 		// $2a$12$1T7IYm0PmxpWyJFjqTSlm.489.s65TvHJbW4R7d1SG0giNHb5bqAm
 		UserDetails kieserver = User.withUsername("kieserver").password(encoder.encode("kieserver")).roles("kie-server")
 				.build();
 
-		return new InMemoryUserDetailsManager(wbadmin, user, kieserver);
+		return new InMemoryUserDetailsManager(wbadmin, user, kieserver,guardianes);
 	}
 
 	@Bean

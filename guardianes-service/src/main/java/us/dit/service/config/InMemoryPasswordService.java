@@ -15,6 +15,7 @@ public class InMemoryPasswordService implements ClearPasswordService {
 		passwords.put("user", "user");
 		passwords.put("wbadmin", "wbadmin");
 		passwords.put("kieserver", "kieserver");
+		passwords.put("guardianes", "guardianes");
 	}
 
 	@Override

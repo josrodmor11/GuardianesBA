@@ -30,7 +30,7 @@ import us.dit.service.services.TasksService;
  * Controlador ejemplo para arrancar el proceso hola
  */
 @Controller
-@RequestMapping("/guardianes/myTasks")
+@RequestMapping("/guardianes")
 public class TasksController {
 	private static final Logger logger = LogManager.getLogger();
 	
@@ -42,7 +42,7 @@ public class TasksController {
 	@Autowired
 	private ClearPasswordService clear;
 
-	@GetMapping
+	@GetMapping("/tasks")
 	public String getAllMyTasks(HttpSession session, Model model) {
 		logger.info("buscando todas las tareas del usuario");
 		List<TaskSummary> tasksList = null;
@@ -52,11 +52,7 @@ public class TasksController {
 		logger.info("Datos de usuario (principal)" + principal);
 		
 
-		// Para conseguir el password en claro he delegado en alguna clase que
-		// implemente la interfaz ClearPasswordService
-		// La implementación que tengo ahora mismo guarda en memoria un mapa de nombre
-		// de usuario clave en claro
-		// Evidentemente será necesario modificar esto en producción
+		//Para no tener que usar el password siempre se crean los clientes con el mismo usuario y contraseña (el kieutil está configurado)
 		tasksList = tasksService.findAll(principal.getUsername());
 		model.addAttribute("tasks", tasksList);
 		/**
@@ -71,7 +67,7 @@ public class TasksController {
 		return "myTasks";
 	}
 
-	@GetMapping("/{taskId}")
+	@GetMapping("/tasks/{taskId}")
 	public String getTaskById(@PathVariable Long taskId, Model model) {
 		logger.info("buscando la tarea " + taskId);
 		TaskInstance task;
@@ -82,16 +78,32 @@ public class TasksController {
 		 * containerId='guardianes-kjar-1.0-SNAPSHOT', workItemId=2, slaCompliance=null,
 		 * slaDueDate=null, correlationKey=2, processType=1}
 		 */
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		UserDetails user = (UserDetails) auth.getPrincipal();
-		logger.info("Datos de usuario " + user);
-		logger.info("pwd de usuario " + clear.getPwd(user.getUsername()));
-		task = tasksService.findById(user.getUsername(), clear.getPwd(user.getUsername()), taskId);
+		
+		task = tasksService.findById(taskId);
 		//Map<String, Object> taskInputData = task.getInputData();
 		logger.info("Tarea localizada " + task);
 		//logger.info("Datos de entrada"+taskInputData);
 		model.addAttribute("task", task);
 		return "task";
+	}
+	@GetMapping("/posibletasks")
+	public String getAllTasks(Model model) {
+		logger.info("buscando todas las tareas");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		UserDetails principal = (UserDetails) auth.getPrincipal();
+		List<TaskSummary> tasksList = null;
+		/**
+		 * Ejemplo valores de una taskInstance TaskInstance{ id=2, name='TareaDePrueba',
+		 * description='', status='Reserved', actualOwner='wbadmin',
+		 * processInstanceId=2, processId='guardianes-kjar.prueba',
+		 * containerId='guardianes-kjar-1.0-SNAPSHOT', workItemId=2, slaCompliance=null,
+		 * slaDueDate=null, correlationKey=2, processType=1}
+		 */
+	
+		tasksList = tasksService.findPotential(principal.getUsername());
+	
+		model.addAttribute("tasks", tasksList);
+		return "myTasks";
 	}
 
 }

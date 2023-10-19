@@ -53,7 +53,7 @@ public class HolaController {
 		// La implementación que tengo ahora mismo guarda en memoria un mapa de nombre
 		// de usuario clave en claro
 		// Evidentemente será necesario modificar esto en producción
-		Long idInstancia = hola.nuevaInstancia(user.getUsername(), clear.getPwd(user.getUsername()));
+		Long idInstancia = hola.nuevaInstancia(user.getUsername());
 		logger.info("vuelve de la invocación nueva instancia");
 		return " Instancia: " + idInstancia.toString();
 	}

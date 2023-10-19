@@ -1,6 +1,9 @@
 package us.dit.service.services;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.kie.server.client.ProcessServicesClient;
@@ -18,11 +21,12 @@ public class HolaService {
 
 	@Autowired
 	private KieUtilService kie;
-	public Long nuevaInstancia(String user, String password) {
-
-	
+	public Long nuevaInstancia(String principal) {
+		Map<String,Object> variables= new HashMap<String,Object>();
+        
+	    variables.put("principal", principal);
 		ProcessServicesClient client = kie.getProcessServicesClient();
-		Long idInstanceProcess = client.startProcess("guardianes-kjar-1.0-SNAPSHOT", "guardianes-kjar.prueba");
+		Long idInstanceProcess = client.startProcess("guardianes-kjar-1.0-SNAPSHOT", "guardianes-kjar.prueba",variables);
 		logger.info("conseguido??? " + idInstanceProcess.toString());
 		return idInstanceProcess;
 	}
