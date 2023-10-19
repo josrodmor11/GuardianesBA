@@ -10,11 +10,8 @@
     <task-event-listeners/>
     <globals/>
     <work-item-handlers/>
-  
-     
-     <environment-entries/>
-       
-    <configurations/> 
+    <environment-entries/>
+    <configurations/>
     <required-roles/>
     <remoteable-classes/>
     <limit-serialization-classes>true</limit-serialization-classes>
