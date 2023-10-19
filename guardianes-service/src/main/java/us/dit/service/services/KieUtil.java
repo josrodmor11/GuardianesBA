@@ -21,28 +21,22 @@ import org.springframework.stereotype.Service;
  * componente spring, para poder inyectarlo en todos aquellos que lo necesiten,
  * especialmente servicios
  */
-
+@Service
 public class KieUtil implements KieUtilService {
 	@Value("${kieserver.location}")
 	private String URL;
-
-	private static final Logger logger = LogManager.getLogger();
+	@Value("${org.kie.server.user}")
 	private String USERNAME;
+	@Value("${org.kie.server.pwd}")
 	private String PASSWORD;
+	private static final Logger logger = LogManager.getLogger();
+	
+	
 
 	private KieServicesConfiguration config;
-
-	public KieUtil(String uRL, String uSERNAME, String pASSWORD) {
-		logger.info("Creando el kieutil");
-		URL = uRL;
-		USERNAME = uSERNAME;
-		PASSWORD = pASSWORD;
-	}
-
-	public KieUtil(String uSERNAME, String pASSWORD) {
-		logger.info("creando kieutil con URL "+URL);
-		USERNAME = uSERNAME;
-		PASSWORD = pASSWORD;
+	
+	public KieUtil() {
+		logger.info("Creando el kieutil con los valores por defecto user "+ USERNAME + "pwd: "+PASSWORD);
 	}
 
 	@Override
@@ -56,9 +50,11 @@ public class KieUtil implements KieUtilService {
 
 	@Override
 	public UserTaskServicesClient getUserTaskServicesClient() {
+		logger.info("ENTRANDO EN USERTASKSERVICE");
 		KieServicesClient kieServicesClient = getKieServicesClient();
+		
 		UserTaskServicesClient userClient = kieServicesClient.getServicesClient(UserTaskServicesClient.class);
-
+		logger.info("Se ha obtenido el cliente para la gestión de tareas");
 		return userClient;
 	}
 

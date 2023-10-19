@@ -22,6 +22,11 @@
         <value></value>
         <type>java.lang.String</type>
       </config-item>
+      <config-item>
+        <name>org.kie.server.bypass.auth.user</name>
+        <value>true</value>
+        <type>java.lang.String</type>
+      </config-item>
     </configItems>
   </configuration>
   <containers>

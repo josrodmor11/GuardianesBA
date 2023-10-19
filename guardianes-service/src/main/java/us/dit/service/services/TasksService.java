@@ -26,8 +26,8 @@ import org.springframework.stereotype.Service;
 public class TasksService {
 
 	private static final Logger logger = LogManager.getLogger();
-	@Value("${kieserver.location}")
-	private String URL;
+	@Autowired
+	private KieUtilService kie;
 	/**
 	 * Busca todas las tareas de un usuario
 	 * 
@@ -37,16 +37,41 @@ public class TasksService {
 	 * @return Una lista de TaskSummaries (con la información más relevante de las
 	 *         tareas asignadas al usuario
 	 */
-	public List<TaskSummary> findAll(String user, String password) {
-		logger.info("En findAll de TaskService");
+	public List<TaskSummary> findAll(String principal) {
+		logger.info("En findAll de TaskService con principal= "+principal);
 
-		KieUtilService kie = new KieUtil(URL,user, password);
-		logger.info("el kieUTIL creado ok");
+		//KieUtilService kie = new KieUtil(URL,user, password);
+	
 		List<TaskSummary> taskList = null;
 
 		UserTaskServicesClient client = kie.getUserTaskServicesClient();
-		logger.info("Llamo a findTasks de UserTaskServicesClient");
-		taskList = client.findTasks(user, 0, 0);
+		logger.info("Llamo a FINDTASKS de UserTaskServicesClient con principal= "+principal);
+		/**
+		 * El método findTasks devuelve las tareas asignadas al usuario que está en el cliente (el que se usó al crearlo), no las asignadas al
+		 * usuario del argumento
+		 * Para que se considere las asignadas al usuario
+		 * "optional user id to be used instead of authenticated user - only when bypass authenticated user is enabled"
+		 * Es decir bypass authenticated tiene que ser true
+		 *   <config-item>
+      <name>org.kie.server.bypass.auth.user</name>
+      <value>true</value>
+      <type>java.lang.String</type>
+      </config-item>
+
+		 */
+		taskList = client.findTasks(principal, 0, 0);
+		//taskList = client.findTasksByVariableAndValue(principal, "actualowner_id", principal, null, null, null);
+		/**
+		 * Esta llamada crea la invocación
+		 * http://localhost:8090/rest/server/queries/tasks/instances/variables/actualowner_id?page=null&pageSize=null&sort=&sortOrder=true&varValue=valordeprincipal'
+		 * Que da error "not found"
+		 */
+		/**
+		taskList=client.findTasksOwned(principal, null, null);
+		Y esta
+		'http://localhost:8090/rest/server/queries/tasks/instances/owners?page=null&pageSize=null&sort=&sortOrder=true'
+		Mismo error
+		**/
 		logger.info("Termino findTasks");
 		for (TaskSummary task : taskList) {
 			System.out.println("Tarea: " + task);
@@ -67,7 +92,7 @@ public class TasksService {
 		List<String> status = new ArrayList<String>();
 		status.add(state);
 
-		KieUtilService kie = new KieUtil(URL,user, password);
+	//	KieUtilService kie = new KieUtil(URL,user, password);
 		logger.info("el kieUTIL creado ok");
 		List<TaskSummary> taskList = null;
 
@@ -134,7 +159,7 @@ public class TasksService {
 
 		TaskInstance task = null;
 
-		KieUtilService kie = new KieUtil(URL,user, password);
+	//	KieUtilService kie = new KieUtil(URL,user, password);
 		logger.info("el kieUTIL creado ok");
 		UserTaskServicesClient client = kie.getUserTaskServicesClient();
 		logger.info("Llamo a findTaskById de UserTaskServicesClient");
@@ -153,11 +178,11 @@ public class TasksService {
 	 * @return Listado de TaskSummaries de las tareas que cumplen el criterio de
 	 *         búsqueda
 	 */
-	public List<TaskSummary> findTasksPool(String user, String password) {
+	public List<TaskSummary> findTasksPool(String principal) {
 		List<TaskSummary> tasks = null;
-		KieUtilService kie = new KieUtil(URL,user, password);
+	//	KieUtilService kie = new KieUtil(URL,user, password);
 		UserTaskServicesClient client = kie.getUserTaskServicesClient();
-		client.findTasksAssignedAsPotentialOwner(user, 0, 0);
+		client.findTasksAssignedAsPotentialOwner(principal, 0, 0);
 		return tasks;
 	}
 

@@ -48,16 +48,16 @@ public class TasksController {
 		List<TaskSummary> tasksList = null;
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		UserDetails user = (UserDetails) auth.getPrincipal();
-		logger.info("Datos de usuario " + user);
-		logger.info("pwd de usuario " + clear.getPwd(user.getUsername()));
+		UserDetails principal = (UserDetails) auth.getPrincipal();
+		logger.info("Datos de usuario (principal)" + principal);
+		
 
 		// Para conseguir el password en claro he delegado en alguna clase que
 		// implemente la interfaz ClearPasswordService
 		// La implementación que tengo ahora mismo guarda en memoria un mapa de nombre
 		// de usuario clave en claro
 		// Evidentemente será necesario modificar esto en producción
-		tasksList = tasksService.findAll(user.getUsername(), clear.getPwd(user.getUsername()));
+		tasksList = tasksService.findAll(principal.getUsername());
 		model.addAttribute("tasks", tasksList);
 		/**
 		 * Ejemplo de datos de una taskSummary devuelta TaskSummary{ id=2,
