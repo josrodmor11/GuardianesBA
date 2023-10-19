@@ -1,8 +1,8 @@
 @echo off
 
 set mavenInput="%*"
-#SET "JAVA_HOME=D:\Programas\jdk1.8.0_351"
-SET "JAVA_HOME=C:\Program Files\Java\jdk1.8.0_311"
+set "JAVA_HOME=D:\Programas\jdk1.8.0_351"
+# set "JAVA_HOME=C:\Program Files\Java\jdk1.8.0_311"
 
 if "%*" == "" (
 	echo No Maven arguments skipping maven build

@@ -30,7 +30,7 @@ import us.dit.service.services.TasksService;
  * Controlador ejemplo para arrancar el proceso hola
  */
 @Controller
-@RequestMapping("/myTasks")
+@RequestMapping("/guardianes/myTasks")
 public class TasksController {
 	private static final Logger logger = LogManager.getLogger();
 	

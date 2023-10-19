@@ -30,7 +30,7 @@ import us.dit.service.services.HolaService;
  * TIENE QUE DESAPARECER, NO CUMPLE REST, ES SÓLO PARA COMENZAR A TRABAJAR
  */
 @RestController
-@RequestMapping("/procesohola")
+@RequestMapping("/guardianes/procesohola")
 public class HolaController {
 	private static final Logger logger = LogManager.getLogger();
 
