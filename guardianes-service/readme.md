@@ -10,3 +10,8 @@ Pero posteriormente se han hecho los siguientes cambios a la configuración por 
 2. Se ha cambiado la configuración de seguridad para que sea conforme a los nuevos mecanismos de Spring
 3. Se ha cambiado el banner por defecto. Se ha usado la web: https://manytools.org/hacker-tools/ascii-banner/
 4. Se ha añadido el fichero guardianes-services.xml para incluir la configuración del servidor kie
+## Ejecución
+* application.properties está preparado para usar postgres como bbdd por defecto
+* Debe estar creada la BBDD y el usuario en el servidor postgres y después ejecutar
+* En windows ejecutar .\launch.bat clean install -Ppostgres
+* Sólo la opción para instalación local de launch.bat (windows) está bien configurada, en las demás habría que incluir las variables adecuadas en el comando de ejecución

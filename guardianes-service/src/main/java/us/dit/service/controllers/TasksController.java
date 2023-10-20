@@ -7,23 +7,21 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import org.kie.server.api.model.instance.TaskInstance;
 import org.kie.server.api.model.instance.TaskSummary;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.ResponseBody;
-//import org.springframework.web.bind.annotation.RestController;
 
-import us.dit.service.config.ClearPasswordService;
+
 import us.dit.service.services.TasksService;
 
 /**
@@ -39,8 +37,7 @@ public class TasksController {
 	 */
 	@Autowired
 	private TasksService tasksService;
-	@Autowired
-	private ClearPasswordService clear;
+	
 
 	@GetMapping("/tasks")
 	public String getAllMyTasks(HttpSession session, Model model) {
