@@ -8,6 +8,7 @@ import org.kie.server.client.KieServicesConfiguration;
 import org.kie.server.client.KieServicesFactory;
 import org.kie.server.client.ProcessServicesClient;
 import org.kie.server.client.QueryServicesClient;
+import org.kie.server.client.UIServicesClient;
 import org.kie.server.client.UserTaskServicesClient;
 import org.kie.server.client.admin.UserTaskAdminServicesClient;
 import org.springframework.beans.factory.annotation.Value;
@@ -70,6 +71,14 @@ public class KieUtil implements KieUtilService {
 	public UserTaskAdminServicesClient getUserTaskAdminServicesClient() {
 		KieServicesClient kieServicesClient = getKieServicesClient();
 		UserTaskAdminServicesClient client = kieServicesClient.getServicesClient(UserTaskAdminServicesClient.class);
+
+		return client;
+	}
+	
+	@Override
+	public UIServicesClient getUIServicesClient() {
+		KieServicesClient kieServicesClient = getKieServicesClient();
+		UIServicesClient client = kieServicesClient.getServicesClient(UIServicesClient.class);
 
 		return client;
 	}

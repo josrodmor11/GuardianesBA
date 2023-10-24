@@ -12,6 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.kie.server.api.model.instance.TaskInstance;
 import org.kie.server.api.model.instance.TaskSummary;
+import org.kie.server.client.UIServicesClient;
 /* https://javadoc.io/doc/org.kie.server/kie-server-api/latest/org/kie/server/api/model/instance/TaskSummary.html */
 import org.kie.server.client.UserTaskServicesClient;
 import org.kie.server.client.admin.UserTaskAdminServicesClient;
@@ -186,6 +187,12 @@ public class TasksService {
 		UserTaskServicesClient client = kie.getUserTaskServicesClient();
 		client.findTasksAssignedAsPotentialOwner(principal, 0, 0);
 		return tasks;
+	}
+	
+	public String findTaskForm(TaskInstance task,String principal) {
+		UIServicesClient client=kie.getUIServicesClient();
+	//return client.getTaskForm(task.getContainerId(),task.getId());
+		return client.getTaskFormAsUser(task.getContainerId(),task.getId(),null,principal);
 	}
 
 }

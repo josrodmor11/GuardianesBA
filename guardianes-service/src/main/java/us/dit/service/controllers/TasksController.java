@@ -65,9 +65,13 @@ public class TasksController {
 	}
 
 	@GetMapping("/tasks/{taskId}")
-	public String getTaskById(@PathVariable Long taskId, Model model) {
+	//public String getTaskById(@PathVariable Long taskId, Model model) {
+	public String getTaskById(@PathVariable Long taskId,HttpSession session) {
 		logger.info("buscando la tarea " + taskId);
 		TaskInstance task;
+	
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		UserDetails principal = (UserDetails) auth.getPrincipal();
 		/**
 		 * Ejemplo valores de una taskInstance TaskInstance{ id=2, name='TareaDePrueba',
 		 * description='', status='Reserved', actualOwner='wbadmin',
@@ -77,11 +81,13 @@ public class TasksController {
 		 */
 		
 		task = tasksService.findById(taskId);
+		
 		//Map<String, Object> taskInputData = task.getInputData();
 		logger.info("Tarea localizada " + task);
 		//logger.info("Datos de entrada"+taskInputData);
-		model.addAttribute("task", task);
-		return "task";
+		//model.addAttribute("task", task);
+		//return "task";
+		return tasksService.findTaskForm(task, principal.getUsername());
 	}
 	@GetMapping("/posibletasks")
 	public String getAllTasks(Model model) {
