@@ -72,6 +72,13 @@
           <value>PER_PROCESS_INSTANCE</value>
           <type>BPM</type>
         </config-item>
+		<!-- 
+		Estrategia con la que el Runtime manager gestiona las sesiones kie (kie sessions)
+		Singleton: The runtime manager maintains a single KieSession and uses it for all the requested processes.
+		Per Request: The runtime manager creates a new KieSession for every request.
+		Per Process Instance: The runtime manager maintains mapping between process instance and KieSession and 
+							  always provides the same KieSession whenever working with a given process instance. 
+		-->
       </configItems>
       <messages/>
       <containerAlias>guardianes-kjar</containerAlias>
