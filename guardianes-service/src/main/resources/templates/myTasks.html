@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- Ayuda con edición html https://www.w3schools.com/howto/default.asp -->
 <html>
 <head>
 <meta charset="ISO-8859-1">
@@ -6,8 +7,9 @@
 <link rel="stylesheet" href="/form-styles.css">
 </head>
 <body>
+<div th:include="navbar.html"></div>
 <p th:text="#{tasks.head}">Here is your task list</p>
-<table class="table table-hover my-2" id="taskTable" style="margin-left: auto; margin-right: auto;">
+<table class="table" id="taskTable" style="margin-left: auto; margin-right: auto;">
 		<thead>
 			<tr>
 				<th scope="row" th:text="#{tasks.name}"></th>
