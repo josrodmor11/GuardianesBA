@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import us.dit.service.services.TasksService;
 
 /**
- * Controlador ejemplo para arrancar el proceso hola
+ * Controlador ejemplo para gestión de tareas
  */
 @Controller
 @RequestMapping("/guardianes")
