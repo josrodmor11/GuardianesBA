@@ -1,5 +1,6 @@
 # Proyecto GuardianesBA
 Este proyecto es una aplicación de negocios jBPM con Spring Boot
+
 Vamos a incluir un proceso para generar la planificación del mes
 ## Módulos
 1. kjar: base de conocimiento kie, procesos, reglas de negocio, etc...
