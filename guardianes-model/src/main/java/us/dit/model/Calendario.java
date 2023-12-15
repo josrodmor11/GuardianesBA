@@ -1,22 +1,24 @@
 package us.dit.model;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 public class Calendario {
-	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long idCalendario;
+
+	@ElementCollection
 	private Set<LocalDate> festivos;
 
-	public Calendario() {
-		/*
-		 * Al momento de intanciarse este objeto se instancia el HashSet así no hay problemas al agregar festivos a la lista más adelante.
-		 */
-		this.festivos = new HashSet<>();
+	public Calendario(Long idCalendario, Set<LocalDate> festivos) {
+		this.idCalendario = idCalendario;
+		this.festivos = festivos;
 	}
-	
+
 	public void agregarFestivo(int year, int month, int day) {
 		LocalDate festivo = LocalDate.of(year, month, day);
 		festivos.add(festivo);
@@ -33,6 +35,13 @@ public class Calendario {
 	public Set<LocalDate> obtenerFestivos() {
 		return festivos;
 	}
-	
+
+	public Long getIdCalendario() {
+		return idCalendario;
+	}
+
+	public void setIdCalendario(Long idCalendario) {
+		this.idCalendario = idCalendario;
+	}
 
 }
