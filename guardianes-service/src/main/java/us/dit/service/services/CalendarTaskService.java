@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 
@@ -25,6 +26,7 @@ public class CalendarTaskService {
 
 	private static final Logger logger = LogManager.getLogger();
 
+	private final String CalendarTaskName = "EstablecerFestivos";
 	@Autowired
 	private KieUtilService kieUtils;
 
@@ -35,23 +37,21 @@ public class CalendarTaskService {
 	@Value("${kieserver.processId}")
 	private String processId;
 
-	public CalendarTaskService(KieUtilService kieUtils, TasksService tasksService, String containerId, String processId) {
-		this.kieUtils = kieUtils;
-		this.tasksService = tasksService;
-		this.containerId = containerId;
-		this.processId = processId;
-	}
-
-
 	public void initCalendarTask(HttpSession session, String principal) {
 		logger.info("Iniciamos la tarea de calendario");
 		List<TaskSummary> taskList = tasksService.findPotential(principal);
 		UserTaskServicesClient userClient = kieUtils.getUserTaskServicesClient();
 
-		for (TaskSummary task : taskList) {
-			userClient.claimTask(containerId, task.getId(), principal);
-			session.setAttribute("tarea", task);
+		List<TaskSummary> tasksFilteredByName = taskList.stream()
+				.filter(task -> task.getName().equals(CalendarTaskName))
+				.collect(Collectors.toList());
+
+		if(!tasksFilteredByName.isEmpty()) {
+			long calendarTaskId = tasksFilteredByName.get(0).getId();
+			userClient.claimTask(containerId, calendarTaskId, principal);
+			session.setAttribute("tarea", calendarTaskId);
 		}
+
 	}
 
 	public void completeCalendarTask(String principal, Set<LocalDate> festivos, TaskSummary task) {

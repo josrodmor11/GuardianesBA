@@ -12,10 +12,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import us.dit.model.FestivosRequest;
 import us.dit.service.services.CalendarTaskService;
 
 import javax.servlet.http.HttpSession;
@@ -35,7 +33,7 @@ public class CalendarController {
 	private static final Logger logger = LogManager.getLogger();
 
 	@Autowired
-	CalendarTaskService calendarTaskService;
+	private CalendarTaskService calendarTaskService;
 	@GetMapping()
 	public String menu() {
 	    return "calendar";
@@ -60,15 +58,15 @@ public class CalendarController {
 		return "calendar";
 	}
 	@PostMapping("/calendar")
-	public String completarTareaEstablecerFestivos (HttpSession session, String festivosSeleccionados) {
+	public String completarTareaEstablecerFestivos (HttpSession session, @RequestBody FestivosRequest festivosRequest) {
 		logger.info("El usuario ya ha seleccionado los festivos");
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails principal = (UserDetails) auth.getPrincipal();
 		logger.info("Datos de usuario (principal)" + principal);
+		String[] fechas = festivosRequest.getFestivos();
 		//Obtenemos los festivos seleccionados
-		Set<LocalDate> festivos = Arrays.stream(festivosSeleccionados.split(","))
-				.filter(s -> !s.isEmpty())
+		Set<LocalDate> festivos = Arrays.stream(fechas)
 				.map(LocalDate::parse)
 				.collect(Collectors.toSet());
 		logger.info("Los festivos son " + festivos);

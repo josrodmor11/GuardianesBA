@@ -187,8 +187,7 @@
 			<id>postgres</id>
 			<activation>
 				<property>
-					<name>env</name>
-					<value>postgres</value>
+					<name>postgres</name>
 				</property>
 			</activation>
 			<dependencies>
