@@ -39,7 +39,7 @@ public class CalendarController {
 	    return "calendar";
 		}
 	
-	@GetMapping("/calendar")
+	@GetMapping("/calendars")
 	@ResponseBody
 	public String iniciarTareaEstablecerFestivos(HttpSession session) {
 		logger.info("Iniciando la seleccion de festivos");
@@ -50,14 +50,14 @@ public class CalendarController {
 				.map(GrantedAuthority::getAuthority)
 				.collect(Collectors.toList());
 
-		if(roles.contains("admin") || roles.contains("process-admin")) {
+		if(roles.contains("ROLE_admin") || roles.contains("ROLE_process-admin")) {
 			//Que se inicie la tarea
 			this.calendarTaskService.initCalendarTask(session, principal.getUsername());
 		}
 
 		return "calendar";
 	}
-	@PostMapping("/calendar")
+	@PostMapping("/calendars")
 	public String completarTareaEstablecerFestivos (HttpSession session, @RequestBody FestivosRequest festivosRequest) {
 		logger.info("El usuario ya ha seleccionado los festivos");
 
