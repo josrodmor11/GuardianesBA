@@ -34,14 +34,15 @@ public class CalendarController {
 
 	@Autowired
 	private CalendarTaskService calendarTaskService;
-	@GetMapping()
-	public String menu() {
+	@GetMapping("/calendars")
+	public String menu(HttpSession session) {
+		this.iniciarTareaEstablecerFestivos(session);
+		logger.info("Devolvemos el html del calendario");
 	    return "calendar";
 		}
-	
-	@GetMapping("/calendars")
+
 	@ResponseBody
-	public String iniciarTareaEstablecerFestivos(HttpSession session) {
+	public void iniciarTareaEstablecerFestivos(HttpSession session) {
 		logger.info("Iniciando la seleccion de festivos");
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails principal = (UserDetails) auth.getPrincipal();
@@ -53,9 +54,8 @@ public class CalendarController {
 		if(roles.contains("ROLE_admin") || roles.contains("ROLE_process-admin")) {
 			//Que se inicie la tarea
 			this.calendarTaskService.initCalendarTask(session, principal.getUsername());
+			logger.info("Tarea iniciada");
 		}
-
-		return "calendar";
 	}
 	@PostMapping("/calendars")
 	public String completarTareaEstablecerFestivos (HttpSession session, @RequestBody FestivosRequest festivosRequest) {
