@@ -3,12 +3,25 @@
  */
 package us.dit.service.controllers;
 
-import javax.servlet.http.HttpSession;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.kie.server.api.model.instance.TaskSummary;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import us.dit.model.FestivosRequest;
+import us.dit.service.services.CalendarTaskService;
+
+import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * TODO: El controlador para manejar los calendarios
@@ -17,8 +30,48 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/guardianes")
 public class CalendarController {
 	
-		@GetMapping("/calendars")
-		public String getAll(HttpSession session, Model model) {
-			return "calendar";
+	private static final Logger logger = LogManager.getLogger();
+
+	@Autowired
+	private CalendarTaskService calendarTaskService;
+	@GetMapping("/calendars")
+	public String menu(HttpSession session) {
+		this.iniciarTareaEstablecerFestivos(session);
+		logger.info("Devolvemos el html del calendario");
+	    return "calendar";
 		}
+
+	@ResponseBody
+	public void iniciarTareaEstablecerFestivos(HttpSession session) {
+		logger.info("Iniciando la seleccion de festivos");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		UserDetails principal = (UserDetails) auth.getPrincipal();
+		logger.info("Datos del usuario principal" + principal);
+		List<String> roles = principal.getAuthorities().stream()
+				.map(GrantedAuthority::getAuthority)
+				.collect(Collectors.toList());
+
+		if(roles.contains("ROLE_admin") || roles.contains("ROLE_process-admin")) {
+			//Que se inicie la tarea
+			this.calendarTaskService.initCalendarTask(session, principal.getUsername());
+			logger.info("Tarea iniciada");
+		}
+	}
+	@PostMapping("/calendars")
+	public String completarTareaEstablecerFestivos (HttpSession session, @RequestBody FestivosRequest festivosRequest) {
+		logger.info("El usuario ya ha seleccionado los festivos");
+
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		UserDetails principal = (UserDetails) auth.getPrincipal();
+		logger.info("Datos de usuario (principal)" + principal);
+		String[] fechas = festivosRequest.getFestivos();
+		//Obtenemos los festivos seleccionados
+		Set<LocalDate> festivos = Arrays.stream(fechas)
+				.map(LocalDate::parse)
+				.collect(Collectors.toSet());
+		logger.info("Los festivos son " + festivos);
+		this.calendarTaskService.completeCalendarTask(principal.getUsername(), festivos, (TaskSummary) session.getAttribute("tarea"));
+
+        return "redirect:/guardianes/calendar?success";
+	}
 }

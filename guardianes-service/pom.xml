@@ -121,6 +121,12 @@
     		<artifactId>spring-boot-starter-quartz</artifactId>
 		</dependency>
 		-->
+		<dependency>
+			<groupId>us.dit</groupId>
+			<artifactId>guardianes-model</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
