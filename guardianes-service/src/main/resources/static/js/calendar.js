@@ -9,9 +9,6 @@ var nextMonthLastDay = new Date(currentDate.getFullYear(), currentDate.getMonth(
 
 var nextMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
 
-var weekend_strtday = 0;
-var weekend_endday =  6;
-
 // Inicialización de componentes
 $('#datepicker').datepicker({
     format: 'dd/mm/yy',
@@ -42,11 +39,19 @@ $('#dateForm').submit(function(event) {
     var selectedDates = $('#datepicker').datepicker('getDates');
     console.log(selectedDates); // Imprime las fechas seleccionadas
 
+    // Formatear las fechas al formato 'yyyy-MM-dd'
+    var formattedDates = selectedDates.map(function(date) {
+        return date.toISOString().split('T')[0];
+    });
+
+    console.log(formattedDates); // Verificar que las fechas estén en el formato correcto
+
+
     $.ajax({
         url: '/guardianes/calendars',
         method: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify({ fechas: selectedDates }),
+        data: JSON.stringify({ festivos: formattedDates }),
         success: function(response) {
             console.log('Fechas enviadas al servidor con éxito', response);
         },
