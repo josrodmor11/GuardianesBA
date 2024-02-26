@@ -4,10 +4,8 @@
 package us.dit.service.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.kie.server.api.model.instance.TaskSummary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,7 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import us.dit.model.Festivos;
 import us.dit.service.services.CalendarTaskService;
 import us.dit.service.services.JsonParserFestivos;
 
@@ -38,13 +35,13 @@ public class CalendarController {
 	private CalendarTaskService calendarTaskService;
 	@GetMapping("/calendars")
 	public String menu(HttpSession session) {
-		this.iniciarTareaEstablecerFestivos(session);
+		this.obtenerTareaEstablecerFestivos(session);
 		logger.info("Devolvemos el html del calendario");
 	    return "calendar";
 		}
 
 
-	public void iniciarTareaEstablecerFestivos(HttpSession session) {
+	public void obtenerTareaEstablecerFestivos(HttpSession session) {
 		logger.info("Iniciando la seleccion de festivos");
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails principal = (UserDetails) auth.getPrincipal();
@@ -55,13 +52,13 @@ public class CalendarController {
 
 		if(roles.contains("ROLE_admin") || roles.contains("ROLE_process-admin")) {
 			//Que se inicie la tarea
-			this.calendarTaskService.initCalendarTask(session, principal.getUsername());
+			this.calendarTaskService.obtainCalendarTask(session, principal.getUsername());
 			logger.info("Tarea iniciada");
 		}
 	}
 	@PostMapping("/calendars")
 	@ResponseBody
-	public String completarTareaEstablecerFestivos (HttpSession session,  @RequestBody String festivosResponse) throws JsonProcessingException {
+	public String inciaryCompletarTareaEstablecerFestivos(HttpSession session, @RequestBody String festivosResponse) throws JsonProcessingException {
 		logger.info("El usuario ya ha seleccionado los festivos");
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -71,7 +68,7 @@ public class CalendarController {
 		Set<LocalDate> festivos = JsonParserFestivos.parseFestivos(festivosResponse);
 		logger.info("Los festivos son " + festivos);
 
-		this.calendarTaskService.completeCalendarTask(principal.getUsername(), festivos, (Long) session.getAttribute("tareaId"));
+		this.calendarTaskService.initAndCompleteCalendarTask(principal.getUsername(), festivos, (Long) session.getAttribute("tareaId"));
 
         return "redirect:/guardianes/calendar?success";
 	}
