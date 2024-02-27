@@ -2,8 +2,7 @@ package us.dit.service.dao;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Repository;
-import us.dit.model.Calendario;
+import us.dit.service.model.Calendario;
 
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;

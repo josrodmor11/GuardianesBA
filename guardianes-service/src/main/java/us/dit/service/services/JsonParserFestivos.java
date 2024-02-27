@@ -3,7 +3,7 @@ package us.dit.service.services;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import us.dit.model.Festivos;
+import us.dit.service.model.Festivos;
 
 import java.io.IOException;
 import java.time.LocalDate;

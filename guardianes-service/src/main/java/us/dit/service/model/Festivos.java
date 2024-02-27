@@ -1,4 +1,4 @@
-package us.dit.model;
+package us.dit.service.model;
 
 import java.util.Arrays;
 import java.util.List;

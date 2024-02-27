@@ -1,4 +1,4 @@
-package us.dit.model;
+package us.dit.service.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -24,6 +24,9 @@ public class Calendario implements Serializable {
 	public Calendario(Set<LocalDate> festivos) {
 		this.festivos = festivos;
 		logger.info("Construyo sin el id el calendario");
+	}
+
+	public Calendario() {
 	}
 
 	public void agregarFestivo(int year, int month, int day) {

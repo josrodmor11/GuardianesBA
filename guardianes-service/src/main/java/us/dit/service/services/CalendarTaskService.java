@@ -15,7 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import us.dit.model.Calendario;
+import us.dit.service.model.Calendario;
+import us.dit.service.dao.CalendarioRepository;
 
 
 @Service
@@ -33,6 +34,8 @@ public class CalendarTaskService {
 	private String containerId;
 	@Value("${kieserver.processId}")
 	private String processId;
+	@Autowired
+	private CalendarioRepository calendarioRepository;
 
 	public void obtainCalendarTask(HttpSession session, String principal) {
 		logger.info("Obtenemos la tarea de calendario");
@@ -68,8 +71,7 @@ public class CalendarTaskService {
         Map<String, Object> params = new HashMap<>();
         params.put("Id_Calendario_Festivos", calendarioFestivos.getIdCalendario());
 		logger.info("Persistimos el calendario " + calendarioFestivos);
-		//JpaCalendarioDao jpaCalendarioDao = new JpaCalendarioDao();
-		//jpaCalendarioDao.save(calendarioFestivos);
+		this.calendarioRepository.save(calendarioFestivos);
         userClient.completeTask(containerId, taskId, principal, params);
 		logger.info("Tarea completada");
     }
