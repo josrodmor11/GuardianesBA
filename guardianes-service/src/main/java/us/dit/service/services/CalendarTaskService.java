@@ -1,6 +1,8 @@
 package us.dit.service.services;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.*;
 
 import java.util.stream.Collectors;
@@ -17,6 +19,9 @@ import org.springframework.stereotype.Service;
 
 import us.dit.service.model.Calendario;
 import us.dit.service.dao.CalendarioRepository;
+import us.dit.service.model.entities.Calendar;
+import us.dit.service.model.entities.DayConfiguration;
+import us.dit.service.model.repositories.CalendarRepository;
 
 
 @Service
@@ -36,6 +41,9 @@ public class CalendarTaskService {
 	private String processId;
 	@Autowired
 	private CalendarioRepository calendarioRepository;
+
+	@Autowired
+	private CalendarRepository calendarRepository;
 
 	public void obtainCalendarTask(HttpSession session, String principal) {
 		logger.info("Obtenemos la tarea de calendario");
@@ -65,8 +73,18 @@ public class CalendarTaskService {
 		userClient.claimTask(containerId, taskId, principal);
 		logger.info("Comenzamos el completado de la tarea de calendario con id " + taskId);
 		userClient.startTask(containerId, taskId, principal);
+		//En este punto construimos nuestro calendario para poder recuperarlo en la tarea de generar planificacion
+		//y poder decirle al scheduler que genere la planificacion del mes siguiente y año.
 		logger.info("Construimos el calendario");
 		Calendario calendarioFestivos = new Calendario(festivos);
+
+		//En este punto construimos el calendario de Miguel Angel para que en la parte de planificacion
+		//Se pueda generar la planificacion sin problemas
+		logger.info("Construimos el calendario de Miguel Angel");
+		Calendar calendarFestivos = this.buildCalendar(festivos);
+		logger.info("Persistimos el calendario de Miguel Angel");
+		this.calendarRepository.save(calendarFestivos);
+
 		logger.info("Construimos el mapa con los parametros de salida");
         Map<String, Object> params = new HashMap<>();
         params.put("Id_Calendario_Festivos", calendarioFestivos.getIdCalendario());
@@ -75,6 +93,27 @@ public class CalendarTaskService {
         userClient.completeTask(containerId, taskId, principal, params);
 		logger.info("Tarea completada");
     }
+
+	private Calendar buildCalendar(Set<LocalDate> festivos) {
+		LocalDate day = null;
+		LocalDate yearAndMonth = festivos.iterator().next();
+		YearMonth yearMonth = YearMonth.of(yearAndMonth.getYear(), yearAndMonth.getMonth());
+		Calendar calendar = new Calendar(yearMonth.getMonthValue(), yearMonth.getYear());
+		DayConfiguration dayConf = null;
+		SortedSet<DayConfiguration> dayConfs = new TreeSet<>();
+		for (int i = 1; yearMonth.isValidDay(i); i++) {
+			day = yearMonth.atDay(i);
+			logger.info("El dia es " + day);
+			boolean isWorkingDay = day.getDayOfWeek() != DayOfWeek.SUNDAY && day.getDayOfWeek() != DayOfWeek.SATURDAY
+					&& festivos.contains(day);
+			logger.info("¿Es día laborable? " + isWorkingDay);
+			dayConf = new DayConfiguration(i, isWorkingDay, 0, 0);
+			dayConf.setCalendar(calendar);
+			dayConfs.add(dayConf);
+		}
+		calendar.setDayConfigurations(dayConfs);
+		return calendar;
+	}
 
 	
 	
