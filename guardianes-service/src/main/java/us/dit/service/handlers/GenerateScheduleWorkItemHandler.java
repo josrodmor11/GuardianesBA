@@ -9,14 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import us.dit.service.controllers.SchedulerHandler;
 import us.dit.service.dao.CalendarioRepository;
-import us.dit.service.model.Calendario;
 import us.dit.service.model.entities.Calendar;
 import us.dit.service.model.entities.Schedule;
 import us.dit.service.model.entities.Schedule.ScheduleStatus;
-
 import us.dit.service.model.entities.primarykeys.CalendarPK;
-import us.dit.service.model.repositories.ScheduleRepository;
 import us.dit.service.model.repositories.CalendarRepository;
+import us.dit.service.model.repositories.ScheduleRepository;
 
 import java.time.YearMonth;
 import java.util.HashMap;
@@ -44,23 +42,20 @@ public class GenerateScheduleWorkItemHandler implements WorkItemHandler {
         String dataBase = (String) workItem.getParameter("DataBase");
 
         logger.info("Entramos en GenerateSchedulerWorkItemHandler");
-        //Obtengo el calendario mio para poder obtener el calendar de miguel angel, ya que en
-        // mi proyecto la planificacion es del mes siguiente al actual
-        Optional<Calendario> calendario = this.calendarioRepository.findById(Integer.parseInt(idCalendarioFestivos));
-        int year = 0;
-        int month = 0;
 
-        if(calendario.isPresent()) {
-            year = calendario.get().getFestivos().iterator().next().getYear();
-            month = calendario.get().getFestivos().iterator().next().getMonthValue();
-        }
+        String[] parts = idCalendarioFestivos.split("-");
+        int month = Integer.parseInt(parts[0]);
+        int year = Integer.parseInt(parts[1]);
+
         //Asi el yearMonth construido es del mes siguiente y es el obtenido de la tarea Establecer festivos
-        YearMonth yearMonth = YearMonth.of(year,month);
+        YearMonth yearMonth = YearMonth.of(year, month);
 
         logger.info("Request received to generate schedule for: " + yearMonth);
-        //Y ademas como construimos en la tarea establecer festivos el calendario de miguel angel
+        //Y ademas como construimos en la tarea establecer festivos el calendario
         //podemos recuperarlo y poder usar su scheduler de forma sencilla
         CalendarPK pk = new CalendarPK(yearMonth.getMonthValue(), yearMonth.getYear());
+
+        logger.info("El CalendarPK generado es " + pk);
 
         Optional<Calendar> calendar = calendarRepository.findById(pk);
         if (!calendar.isPresent()) {
@@ -79,14 +74,16 @@ public class GenerateScheduleWorkItemHandler implements WorkItemHandler {
         schedulerHandler.startScheduleGeneration(calendar.get());
 
         // Recuperamos el schedule para guardar su id en el proceso que sera el mes y año de ese calendario
-        int scheduleMonth =  scheduleRepository.findById(pk).get().getMonth();
+        int scheduleMonth = scheduleRepository.findById(pk).get().getMonth();
         int scheduleYear = scheduleRepository.findById(pk).get().getYear();
         // Para posteriormente en la tarea Validar planificacion podamos obtener el schedule
         String idPlanificacionProvisional = scheduleMonth + "-" + scheduleYear;
         logger.info("El id de la planificacion es " + idPlanificacionProvisional);
         Map<String, Object> results = new HashMap<>();
         results.put("IdPlanificacionProvisional", idPlanificacionProvisional);
+        logger.info("Se termina la tarea de Generar Planificacion");
         workItemManager.completeWorkItem(workItem.getId(), results);
+
     }
 
     @Override

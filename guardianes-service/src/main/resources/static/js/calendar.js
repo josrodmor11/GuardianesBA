@@ -41,8 +41,12 @@ $('#dateForm').submit(function(event) {
 
     // Formatear las fechas al formato 'yyyy-MM-dd'
     var formattedDates = selectedDates.map(function(date) {
-        return date.toISOString().split('T')[0];
+        var year = date.getFullYear();
+        var month = ('0' + (date.getMonth() + 1)).slice(-2); // Agregar cero inicial si el mes es menor a 10
+        var day = ('0' + date.getDate()).slice(-2); // Agregar cero inicial si el día es menor a 10
+        return year + '-' + month + '-' + day;
     });
+
 
     console.log(formattedDates); // Verificar que las fechas estén en el formato correcto
 
