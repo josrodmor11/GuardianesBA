@@ -10,9 +10,19 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Clase que parsea el json recibido en un set de LocalDates
+ */
 public class JsonParserFestivos {
     private static final Logger logger = LogManager.getLogger();
 
+    /**
+     * Metodo que a partir del string de JSON de festivos nos devuelve un set de LocalDate
+     * que son los festivo
+     *
+     * @param jsonString Representa el JSON recibido del cliente
+     * @return Set de los festivos
+     */
     public static Set<LocalDate> parseFestivos(String jsonString) {
 
         Set<LocalDate> festivosSet = new HashSet<>();

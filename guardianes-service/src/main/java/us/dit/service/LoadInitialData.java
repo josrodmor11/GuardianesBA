@@ -16,6 +16,9 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+/**
+ * Clase que usamos para cargar informacion inicial y poder trabajar con ella
+ */
 @Configuration
 @Slf4j
 public class LoadInitialData {

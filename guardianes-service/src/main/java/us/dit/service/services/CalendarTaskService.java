@@ -7,7 +7,6 @@ import org.kie.server.client.UserTaskServicesClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import us.dit.service.dao.CalendarioRepository;
 import us.dit.service.model.entities.Calendar;
 import us.dit.service.model.entities.DayConfiguration;
 import us.dit.service.model.repositories.CalendarRepository;
@@ -19,7 +18,10 @@ import java.time.YearMonth;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
+/**
+ * Servicio que obtiene, reclama y completa la tarea de calendario
+ * Ademas crea el objeto Calendar para añadir los festivos
+ */
 @Service
 public class CalendarTaskService {
 
@@ -36,16 +38,18 @@ public class CalendarTaskService {
     @Value("${kieserver.processId}")
     private String processId;
     @Autowired
-    private CalendarioRepository calendarioRepository;
-
-    @Autowired
     private CalendarRepository calendarRepository;
 
+    /**
+     * Metodo que filtra las tareas y obtiene la tarea de calendario
+     *
+     * @param session   objeto que maneja la sesion HTTP
+     * @param principal Cadena que representa al usuario
+     */
     public void obtainCalendarTask(HttpSession session, String principal) {
         logger.info("Obtenemos la tarea de calendario");
         List<TaskSummary> taskList = tasksService.findPotential(principal);
         logger.info("Las tareas son " + taskList);
-        UserTaskServicesClient userClient = kieUtils.getUserTaskServicesClient();
 
         List<TaskSummary> tasksFilteredByName = taskList.stream()
                 .filter(task -> task.getName().equals(CalendarTaskName)
@@ -63,6 +67,14 @@ public class CalendarTaskService {
 
     }
 
+    /**
+     * Metodo que reclama la tarea de calendario para que la realice el usuario
+     * y la completa cuando se ha realizado
+     *
+     * @param principal Cadena que representa al usuario
+     * @param festivos  Set de LocalDate que representa los festivos
+     * @param taskId    Representa el id de la tarea
+     */
     public void initAndCompleteCalendarTask(String principal, Set<LocalDate> festivos, Long taskId) {
         UserTaskServicesClient userClient = kieUtils.getUserTaskServicesClient();
         logger.info("Reclamamos la tarea de calendario con id " + taskId);
@@ -86,6 +98,12 @@ public class CalendarTaskService {
 
     }
 
+    /**
+     * Metodo que construye el objeto Calendar y le añade los festivos introducidos por el usuario
+     *
+     * @param festivos Set de LocalDate que representa los festivos
+     * @return El objeto calendar
+     */
     private Calendar buildCalendar(Set<LocalDate> festivos) {
         logger.info("Los festivos son {} ", festivos);
         LocalDate day = null;

@@ -8,7 +8,6 @@ import org.kie.api.runtime.process.WorkItemManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import us.dit.service.controllers.SchedulerHandler;
-import us.dit.service.dao.CalendarioRepository;
 import us.dit.service.model.entities.Calendar;
 import us.dit.service.model.entities.Schedule;
 import us.dit.service.model.entities.Schedule.ScheduleStatus;
@@ -30,9 +29,6 @@ public class GenerateScheduleWorkItemHandler implements WorkItemHandler {
     private ScheduleRepository scheduleRepository;
     @Autowired
     private CalendarRepository calendarRepository;
-
-    @Autowired
-    private CalendarioRepository calendarioRepository;
 
     @Override
     public void executeWorkItem(WorkItem workItem, WorkItemManager workItemManager) {

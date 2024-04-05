@@ -1,8 +1,10 @@
 package us.dit.service.model;
 
-import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Clase que representa los festivos que recibimos del cliente en una peticion HTTP
+ */
 public class Festivos {
     private List<String> festivos;
 
