@@ -122,7 +122,7 @@ public class CalendarTaskService {
             } else {
                 logger.info("¿Es dia laborable? SI");
             }
-            dayConf = new DayConfiguration(i, isWorkingDay, 0, 0);
+            dayConf = new DayConfiguration(i, isWorkingDay, 2, 0);
             dayConf.setCalendar(calendar);
             dayConfs.add(dayConf);
         }
