@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 import us.dit.service.model.entities.Calendar;
 import us.dit.service.model.entities.DayConfiguration;
 import us.dit.service.model.repositories.CalendarRepository;
+import us.dit.service.model.repositories.DoctorRepository;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Validator;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -39,6 +41,12 @@ public class CalendarTaskService {
     private String processId;
     @Autowired
     private CalendarRepository calendarRepository;
+
+    @Autowired
+    private DoctorRepository doctorRepository;
+
+    @Autowired
+    private Validator validator;
 
     /**
      * Metodo que filtra las tareas y obtiene la tarea de calendario
@@ -106,27 +114,29 @@ public class CalendarTaskService {
      */
     private Calendar buildCalendar(Set<LocalDate> festivos) {
         logger.info("Los festivos son {} ", festivos);
-        LocalDate day = null;
         LocalDate yearAndMonth = festivos.iterator().next();
         YearMonth yearMonth = YearMonth.of(yearAndMonth.getYear(), yearAndMonth.getMonth());
         Calendar calendar = new Calendar(yearMonth.getMonthValue(), yearMonth.getYear());
-        DayConfiguration dayConf = null;
-        SortedSet<DayConfiguration> dayConfs = new TreeSet<>();
-        for (int i = 1; yearMonth.isValidDay(i); i++) {
-            day = yearMonth.atDay(i);
-            logger.info("El dia es " + day);
-            boolean isWorkingDay = day.getDayOfWeek() != DayOfWeek.SUNDAY && day.getDayOfWeek() != DayOfWeek.SATURDAY
-                    && !festivos.contains(day);
-            if (!isWorkingDay) {
-                logger.info("¿Es dia laborable? NO");
-            } else {
-                logger.info("¿Es dia laborable? SI");
-            }
-            dayConf = new DayConfiguration(i, isWorkingDay, 2, 0);
+        List<DayConfiguration> dayConfs = new LinkedList<>();
+        DayConfiguration dayConf;
+        LocalDate currDate = yearMonth.atDay(1);
+        DayOfWeek currDayWeek = currDate.getDayOfWeek();
+        while (currDate.getMonth().equals(yearMonth.getMonth())) {
+            logger.info("El dia actual es " + currDate);
+            dayConf = new DayConfiguration();
+            dayConf.setDay(currDate.getDayOfMonth());
+            dayConf.setIsWorkingDay(currDayWeek != DayOfWeek.SATURDAY
+                    && currDayWeek != DayOfWeek.SUNDAY
+                    && !festivos.contains(currDate));
+            dayConf.setNumShifts(2);
+            dayConf.setNumConsultations(0);
             dayConf.setCalendar(calendar);
             dayConfs.add(dayConf);
+
+            currDate = currDate.plusDays(1);
+            currDayWeek = currDate.getDayOfWeek();
         }
-        calendar.setDayConfigurations(dayConfs);
+        calendar.setDayConfigurations(new TreeSet<>(dayConfs));
         return calendar;
     }
 
