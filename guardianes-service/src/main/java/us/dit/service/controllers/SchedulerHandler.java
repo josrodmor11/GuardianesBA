@@ -21,6 +21,8 @@ import us.dit.service.model.repositories.ShiftConfigurationRepository;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -163,6 +165,9 @@ public class SchedulerHandler {
                 try {
                     log.info("The scheduler finished correctly. Attempting to read the output file");
                     ObjectMapper objectMapper = new ObjectMapper();
+                    // Leer y imprimir el contenido del archivo JSON
+                    String scheduleJSONContent = new String(Files.readAllBytes(Paths.get(scheduleFilePath)));
+                    log.debug("Contenido del archivo SchedulerJson: " + scheduleJSONContent);
                     ScheduleSchedulerDTO scheduleDTO = objectMapper.readValue(scheduleFile, ScheduleSchedulerDTO.class);
                     log.debug("The generated scheduleDTO is: " + scheduleDTO);
                     if (scheduleDTO == null) {
