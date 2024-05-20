@@ -5,16 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import us.dit.service.model.entities.Calendar;
 import us.dit.service.model.entities.*;
 import us.dit.service.model.repositories.*;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.util.Optional;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * Clase que usamos para cargar informacion inicial y poder trabajar con ella
@@ -44,7 +42,8 @@ public class LoadInitialData {
                     && this.rolRepository.findAll().isEmpty()) {
                 log.info("Starting the preload of the initial data");
 
-                LocalDate refDate = LocalDate.of(2020, 5, 1);
+
+                LocalDate refDate = LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth().plus(1), 1);
 
                 preloadRoles();
                 // Preload the Doctors
@@ -127,7 +126,7 @@ public class LoadInitialData {
     private void preloadDoctor(String name, String lastNames, String email, LocalDate startDate, int minShifts,
                                int maxShifts, int numConsultations, boolean doesCycleShifts, boolean hasShiftsOnlyWhenCycleShifts) {
         preloadDoctor(name, lastNames, email, startDate, minShifts, maxShifts, numConsultations, doesCycleShifts,
-                hasShiftsOnlyWhenCycleShifts, null, null, null);
+                hasShiftsOnlyWhenCycleShifts, new HashSet<>(), new HashSet<>(), new HashSet<>());
     }
 
     private void preloadDoctor(String name, String lastNames, String email, LocalDate startDate, int minShifts,

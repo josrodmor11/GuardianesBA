@@ -10,10 +10,8 @@ import org.springframework.stereotype.Service;
 import us.dit.service.model.entities.Calendar;
 import us.dit.service.model.entities.DayConfiguration;
 import us.dit.service.model.repositories.CalendarRepository;
-import us.dit.service.model.repositories.DoctorRepository;
 
 import javax.servlet.http.HttpSession;
-import javax.validation.Validator;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -42,12 +40,6 @@ public class CalendarTaskService {
     @Autowired
     private CalendarRepository calendarRepository;
 
-    @Autowired
-    private DoctorRepository doctorRepository;
-
-    @Autowired
-    private Validator validator;
-
     /**
      * Metodo que filtra las tareas y obtiene la tarea de calendario
      *
@@ -57,7 +49,7 @@ public class CalendarTaskService {
     public void obtainCalendarTask(HttpSession session, String principal) {
         logger.info("Obtenemos la tarea de calendario");
         List<TaskSummary> taskList = tasksService.findPotential(principal);
-        logger.info("Las tareas son " + taskList);
+        logger.debug("Las tareas son " + taskList);
 
         List<TaskSummary> tasksFilteredByName = taskList.stream()
                 .filter(task -> task.getName().equals(CalendarTaskName)
@@ -67,9 +59,9 @@ public class CalendarTaskService {
 
         logger.info("Las tareas filtradas son " + tasksFilteredByName);
         if (!tasksFilteredByName.isEmpty()) {
-            logger.info("Hay tareas de calendario disponibles");
+            logger.debug("Hay tareas de calendario disponibles");
             long calendarTaskId = tasksFilteredByName.get(0).getId();
-            logger.info("El id de la tarea es " + calendarTaskId);
+            logger.debug("El id de la tarea es " + calendarTaskId);
             session.setAttribute("tareaId", calendarTaskId);
         }
 
@@ -88,10 +80,10 @@ public class CalendarTaskService {
         logger.info("Reclamamos la tarea de calendario con id " + taskId);
         userClient.claimTask(containerId, taskId, principal);
 
-        logger.info("Comenzamos el completado de la tarea de calendario con id " + taskId);
+        logger.debug("Comenzamos el completado de la tarea de calendario con id " + taskId);
         userClient.startTask(containerId, taskId, principal);
 
-        logger.info("Construimos el calendario");
+        logger.debug("Construimos el calendario");
         Calendar calendarioFestivos = this.buildCalendar(festivos);
 
         logger.info("Persistimos el calendario " + calendarioFestivos);
@@ -122,7 +114,7 @@ public class CalendarTaskService {
         LocalDate currDate = yearMonth.atDay(1);
         DayOfWeek currDayWeek = currDate.getDayOfWeek();
         while (currDate.getMonth().equals(yearMonth.getMonth())) {
-            logger.info("El dia actual es " + currDate);
+            logger.debug("El dia actual es " + currDate);
             dayConf = new DayConfiguration();
             dayConf.setDay(currDate.getDayOfMonth());
             dayConf.setIsWorkingDay(currDayWeek != DayOfWeek.SATURDAY

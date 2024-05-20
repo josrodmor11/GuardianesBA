@@ -24,7 +24,7 @@ import java.util.Optional;
 public class GenerateScheduleWorkItemHandler implements WorkItemHandler {
     private static final Logger logger = LogManager.getLogger();
     @Autowired
-    SchedulerHandler schedulerHandler;
+    private SchedulerHandler schedulerHandler;
     @Autowired
     private ScheduleRepository scheduleRepository;
     @Autowired
@@ -37,7 +37,7 @@ public class GenerateScheduleWorkItemHandler implements WorkItemHandler {
         // elecciones de las preferencias de los médicos, etc...
         String dataBase = (String) workItem.getParameter("DataBase");
 
-        logger.info("Entramos en GenerateSchedulerWorkItemHandler");
+        logger.info("Ejecutando WorkItemHandler para el trabajo: " + workItem.getName());
 
         String[] parts = idCalendarioFestivos.split("-");
         int month = Integer.parseInt(parts[0]);
@@ -53,25 +53,24 @@ public class GenerateScheduleWorkItemHandler implements WorkItemHandler {
 
         logger.info("El CalendarPK generado es " + pk);
 
-        Optional<Calendar> calendar = calendarRepository.findById(pk);
+        Optional<Calendar> calendar = this.calendarRepository.findById(pk);
         if (!calendar.isPresent()) {
-            logger.info("Trying to generate a schedule for a non existing calendar");
+            throw new RuntimeException("Trying to generate a schedule for a non existing calendar");
         }
 
-        if (scheduleRepository.findById(pk).isPresent()) {
+        if (this.scheduleRepository.findById(pk).isPresent()) {
             logger.info("The schedule is already generated");
         }
         logger.info("Persisting a schedule with status " + ScheduleStatus.BEING_GENERATED);
         Schedule schedule = new Schedule(ScheduleStatus.BEING_GENERATED);
         schedule.setCalendar(calendar.get());
-        scheduleRepository.save(schedule);
+        this.scheduleRepository.save(schedule);
 
-        // This will be run in a separate thread, so the call is non-blocking
-        schedulerHandler.startScheduleGeneration(calendar.get());
+        this.schedulerHandler.startScheduleGeneration(calendar.get());
 
         // Recuperamos el schedule para guardar su id en el proceso que sera el mes y año de ese calendario
-        int scheduleMonth = scheduleRepository.findById(pk).get().getMonth();
-        int scheduleYear = scheduleRepository.findById(pk).get().getYear();
+        int scheduleMonth = this.scheduleRepository.findById(pk).get().getMonth();
+        int scheduleYear = this.scheduleRepository.findById(pk).get().getYear();
         // Para posteriormente en la tarea Validar planificacion podamos obtener el schedule
         String idPlanificacionProvisional = scheduleMonth + "-" + scheduleYear;
         logger.info("El id de la planificacion es " + idPlanificacionProvisional);

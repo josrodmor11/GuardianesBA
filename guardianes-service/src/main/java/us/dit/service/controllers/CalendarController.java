@@ -55,7 +55,7 @@ public class CalendarController {
         logger.info("Iniciando la seleccion de festivos");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetails principal = (UserDetails) auth.getPrincipal();
-        logger.info("Datos del usuario principal" + principal);
+        logger.debug("Datos del usuario principal" + principal);
         List<String> roles = principal.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
@@ -81,13 +81,13 @@ public class CalendarController {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetails principal = (UserDetails) auth.getPrincipal();
-        logger.info("Datos de usuario (principal)" + principal);
+        logger.debug("Datos de usuario (principal)" + principal);
 
         Set<LocalDate> festivos = JsonParserFestivos.parseFestivos(festivosResponse);
         logger.info("Los festivos son " + festivos);
 
         this.calendarTaskService.initAndCompleteCalendarTask(principal.getUsername(), festivos, (Long) session.getAttribute("tareaId"));
 
-        return "redirect:/guardianes/calendar?success";
+        return "redirect:/guardianes/schedules";
     }
 }
