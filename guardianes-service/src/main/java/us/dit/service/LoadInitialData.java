@@ -5,9 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import us.dit.service.model.entities.Calendar;
-import us.dit.service.model.entities.*;
-import us.dit.service.model.repositories.*;
+import us.dit.model.entities.Calendar;
+import us.dit.model.entities.*;
+import us.dit.model.repositories.*;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
