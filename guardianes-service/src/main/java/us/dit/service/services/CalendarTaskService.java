@@ -7,9 +7,9 @@ import org.kie.server.client.UserTaskServicesClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import us.dit.model.entities.Calendar;
-import us.dit.model.entities.DayConfiguration;
-import us.dit.model.repositories.CalendarRepository;
+import us.dit.service.model.entities.Calendar;
+import us.dit.service.model.entities.DayConfiguration;
+import us.dit.service.model.repositories.CalendarRepository;
 
 import javax.servlet.http.HttpSession;
 import java.time.DayOfWeek;

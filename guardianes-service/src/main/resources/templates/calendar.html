@@ -3,23 +3,23 @@
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no"
-          name="viewport">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link href="/css/form-styles.css" rel="stylesheet">
-    <link href="/css/bootstrap.min.css"
-          rel="stylesheet">
+    <link rel="stylesheet" href="/css/form-styles.css">
+    <link rel="stylesheet"
+          href="/css/bootstrap.min.css">
     <link href="/css/bootstrap-datepicker.standalone.min.css" rel="stylesheet"/>
-    <link href="/css/bootstrap-select.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/bootstrap-select.css" />
     <title>Calendario de Festivos</title>
 </head>
 <body>
 
-<form action="guardianes/calendars" id="dateForm" method="POST">
-    <div class="my-2 row d-flex justify-content-center" id="datepicker"></div>
+<form id="dateForm" action="guardianes/calendars" method="POST">
+    <div id="datepicker" class="my-2 row d-flex justify-content-center"></div>
     <div style="text-align: center;">
-        <button style="display: inline-block;" type="submit">Guardar festivos</button>
+        <button type="submit" style="display: inline-block;">Guardar festivos</button>
     </div>
 
 </form>
