@@ -40,6 +40,11 @@ public class CalendarTaskService {
     @Autowired
     private CalendarRepository calendarRepository;
 
+    @Value("${guardianes.porDefecto.numeroMinimosDeTurnosPorDia}")
+    private Integer defaultMinShiftsPerDay;
+    @Value("${guardianes.porDefecto.numeroMinimosdeConsultasPorDia}")
+    private Integer defaultMinConsultationsPerDay;
+
     /**
      * Metodo que filtra las tareas y obtiene la tarea de calendario
      *
@@ -54,7 +59,7 @@ public class CalendarTaskService {
         List<TaskSummary> tasksFilteredByName = taskList.stream()
                 .filter(task -> task.getName().equals(CalendarTaskName)
                         && task.getProcessId().equals(processId)
-                        && task.getStatus().equals("Ready"))
+                        && task.getStatus().equals("Ready") || task.getStatus().equals("InProgress"))
                 .collect(Collectors.toList());
 
         logger.info("Las tareas filtradas son " + tasksFilteredByName);
@@ -77,11 +82,12 @@ public class CalendarTaskService {
      */
     public void initAndCompleteCalendarTask(String principal, Set<LocalDate> festivos, Long taskId) {
         UserTaskServicesClient userClient = kieUtils.getUserTaskServicesClient();
-        logger.info("Reclamamos la tarea de calendario con id " + taskId);
-        userClient.claimTask(containerId, taskId, principal);
-
-        logger.debug("Comenzamos el completado de la tarea de calendario con id " + taskId);
-        userClient.startTask(containerId, taskId, principal);
+        if (userClient.findTaskById(taskId).getStatus().equals("Ready")) {
+            logger.info("Reclamamos la tarea de calendario con id " + taskId);
+            userClient.claimTask(containerId, taskId, principal);
+            logger.debug("Comenzamos el completado de la tarea de calendario con id " + taskId);
+            userClient.startTask(containerId, taskId, principal);
+        }
 
         logger.debug("Construimos el calendario");
         Calendar calendarioFestivos = this.buildCalendar(festivos);
@@ -120,8 +126,8 @@ public class CalendarTaskService {
             dayConf.setIsWorkingDay(currDayWeek != DayOfWeek.SATURDAY
                     && currDayWeek != DayOfWeek.SUNDAY
                     && !festivos.contains(currDate));
-            dayConf.setNumShifts(2);
-            dayConf.setNumConsultations(0);
+            dayConf.setNumShifts(defaultMinShiftsPerDay);
+            dayConf.setNumConsultations(defaultMinConsultationsPerDay);
             dayConf.setCalendar(calendar);
             dayConfs.add(dayConf);
 

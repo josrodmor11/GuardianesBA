@@ -58,9 +58,11 @@ $('#dateForm').submit(function(event) {
         data: JSON.stringify({ festivos: formattedDates }),
         success: function(response) {
             console.log('Fechas enviadas al servidor con éxito', response);
+            window.location = response;
         },
         error: function(error) {
             console.error('Error al enviar las fechas al servidor:', error);
+            window.location = "/error";
         }
     });
 

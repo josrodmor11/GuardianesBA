@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
 import us.dit.service.model.entities.Calendar;
 import us.dit.service.model.entities.*;
 import us.dit.service.model.repositories.*;
@@ -30,6 +31,9 @@ public class LoadInitialData {
     private AllowedShiftRepository allowedShiftRepository;
     @Autowired
     private RolRepository rolRepository;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Bean
     CommandLineRunner preloadInitialData() {
@@ -85,7 +89,7 @@ public class LoadInitialData {
 
                 // To preload a calendar, use:
                 // preloadCalendarFor(YearMonth.of(2020, 6));
-
+                executeSqlStatements();
                 log.info("The preload of the initial data finished");
             } else {
                 log.info("The preload of the initial data has been done before. It is not necessary to do it again.");
@@ -93,6 +97,11 @@ public class LoadInitialData {
         };
     }
 
+    private void executeSqlStatements() {
+        jdbcTemplate.execute("ALTER TABLE public.scheduleday_doctor ALTER COLUMN shifts_id DROP NOT NULL");
+        jdbcTemplate.execute("ALTER TABLE public.scheduleday_doctor ALTER COLUMN cycle_id DROP NOT NULL");
+        jdbcTemplate.execute("ALTER TABLE public.scheduleday_doctor ALTER COLUMN consultations_id DROP NOT NULL");
+    }
 
     private void preloadRoles() {
         Rol doctor = new Rol("Doctor");

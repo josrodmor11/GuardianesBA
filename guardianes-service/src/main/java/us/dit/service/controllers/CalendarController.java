@@ -88,6 +88,6 @@ public class CalendarController {
 
         this.calendarTaskService.initAndCompleteCalendarTask(principal.getUsername(), festivos, (Long) session.getAttribute("tareaId"));
 
-        return "redirect:/guardianes/schedules";
+        return "/";
     }
 }

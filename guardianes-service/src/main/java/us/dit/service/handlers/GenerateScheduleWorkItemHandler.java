@@ -33,9 +33,6 @@ public class GenerateScheduleWorkItemHandler implements WorkItemHandler {
     @Override
     public void executeWorkItem(WorkItem workItem, WorkItemManager workItemManager) {
         String idCalendarioFestivos = (String) workItem.getParameter("IdCalendarioFestivos");
-        //Representa los datos de base de datos que se deberían coger, los médicos,
-        // elecciones de las preferencias de los médicos, etc...
-        String dataBase = (String) workItem.getParameter("DataBase");
 
         logger.info("Ejecutando WorkItemHandler para el trabajo: " + workItem.getName());
 
@@ -59,7 +56,7 @@ public class GenerateScheduleWorkItemHandler implements WorkItemHandler {
         }
 
         if (this.scheduleRepository.findById(pk).isPresent()) {
-            logger.info("The schedule is already generated");
+            throw new RuntimeException("The schedule is already generated");
         }
         logger.info("Persisting a schedule with status " + ScheduleStatus.BEING_GENERATED);
         Schedule schedule = new Schedule(ScheduleStatus.BEING_GENERATED);
