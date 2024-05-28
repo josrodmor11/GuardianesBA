@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <!-- Ayuda con edición html https://www.w3schools.com/howto/default.asp -->
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="/form-styles.css">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+  <link rel="stylesheet" th:href="@{/css/index-styles.css}">
 </head>
 <body>
 
 <div class="topnav">
-  <a class="active" href="/" th:text="#{navbar.home}">Home</a>
-  <a href="/guardianes/tasks" th:text="#{navbar.tasks}">Tasks</a>
-  <a href="/guardianes/schedules" th:text="#{navbar.schedule}">Schedules</a>
-  <a href="/guardianes/calendars" th:text="#{navbar.calendar}">Calendars</a>
+  <a class="active" th:href="@{/}">Menu principal</a>
+  <a th:href="@{/guardianes/calendars}">Establecer festivos</a>
+  <a th:href="@{/guardianes/schedules}">Validar Planificacion</a>
 </div>
 </body>
 </html>

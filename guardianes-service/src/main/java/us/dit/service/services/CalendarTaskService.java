@@ -50,8 +50,9 @@ public class CalendarTaskService {
      *
      * @param session   objeto que maneja la sesion HTTP
      * @param principal Cadena que representa al usuario
+     * @return
      */
-    public void obtainCalendarTask(HttpSession session, String principal) {
+    public List<TaskSummary> obtainCalendarTask(HttpSession session, String principal) {
         logger.info("Obtenemos la tarea de calendario");
         List<TaskSummary> taskList = tasksService.findPotential(principal);
         logger.debug("Las tareas son " + taskList);
@@ -69,7 +70,7 @@ public class CalendarTaskService {
             logger.debug("El id de la tarea es " + calendarTaskId);
             session.setAttribute("tareaId", calendarTaskId);
         }
-
+        return tasksFilteredByName;
     }
 
     /**
@@ -112,8 +113,8 @@ public class CalendarTaskService {
      */
     private Calendar buildCalendar(Set<LocalDate> festivos) {
         logger.info("Los festivos son {} ", festivos);
-        LocalDate yearAndMonth = festivos.iterator().next();
-        YearMonth yearMonth = YearMonth.of(yearAndMonth.getYear(), yearAndMonth.getMonth());
+        LocalDate now = LocalDate.now();
+        YearMonth yearMonth = YearMonth.of(now.getYear(), now.getMonth()).plusMonths(1);
         Calendar calendar = new Calendar(yearMonth.getMonthValue(), yearMonth.getYear());
         List<DayConfiguration> dayConfs = new LinkedList<>();
         DayConfiguration dayConf;
@@ -123,9 +124,13 @@ public class CalendarTaskService {
             logger.debug("El dia actual es " + currDate);
             dayConf = new DayConfiguration();
             dayConf.setDay(currDate.getDayOfMonth());
-            dayConf.setIsWorkingDay(currDayWeek != DayOfWeek.SATURDAY
+
+            boolean isWorkingDay = festivos.isEmpty() ? currDayWeek != DayOfWeek.SATURDAY
+                    && currDayWeek != DayOfWeek.SUNDAY : currDayWeek != DayOfWeek.SATURDAY
                     && currDayWeek != DayOfWeek.SUNDAY
-                    && !festivos.contains(currDate));
+                    && !festivos.contains(currDate);
+            dayConf.setIsWorkingDay(isWorkingDay);
+            
             dayConf.setNumShifts(defaultMinShiftsPerDay);
             dayConf.setNumConsultations(defaultMinConsultationsPerDay);
             dayConf.setCalendar(calendar);

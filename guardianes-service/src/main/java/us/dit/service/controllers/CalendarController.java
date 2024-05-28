@@ -5,6 +5,7 @@ package us.dit.service.controllers;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.kie.server.api.model.instance.TaskSummary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -41,9 +42,7 @@ public class CalendarController {
      */
     @GetMapping("/calendars")
     public String menu(HttpSession session) {
-        this.obtenerTareaEstablecerFestivos(session);
-        logger.info("Devolvemos el html del calendario");
-        return "calendar";
+        return this.obtenerTareaEstablecerFestivos(session);
     }
 
     /**
@@ -51,7 +50,7 @@ public class CalendarController {
      *
      * @param session objeto que maneja la sesion HTTP
      */
-    public void obtenerTareaEstablecerFestivos(HttpSession session) {
+    public String obtenerTareaEstablecerFestivos(HttpSession session) {
         logger.info("Iniciando la seleccion de festivos");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetails principal = (UserDetails) auth.getPrincipal();
@@ -62,9 +61,15 @@ public class CalendarController {
 
         if (roles.contains("ROLE_admin") || roles.contains("ROLE_process-admin")) {
             //Que se inicie la tarea
-            this.calendarTaskService.obtainCalendarTask(session, principal.getUsername());
+            List<TaskSummary> tasksObtained = this.calendarTaskService.obtainCalendarTask(session, principal.getUsername());
             logger.info("Tarea iniciada");
+            if (tasksObtained.isEmpty()) {
+                logger.info("Devolvemos el html de error");
+                return "error";
+            }
         }
+        logger.info("Devolvemos el html del calendario");
+        return "calendar";
     }
 
     /**

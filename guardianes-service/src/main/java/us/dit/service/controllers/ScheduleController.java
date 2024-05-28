@@ -25,7 +25,7 @@ public class ScheduleController {
      * @param session objeto que maneja la sesion HTTP
      * @return El html de la planificación
      */
-    @GetMapping("/guardianes/schedules")
+    @GetMapping("/schedules")
     public String menu(HttpSession session) {
         logger.info("Devolvemos el html de la planificacion");
         return "schedules";

@@ -7,13 +7,13 @@ import org.kie.api.runtime.process.WorkItemHandler;
 import org.kie.api.runtime.process.WorkItemManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import us.dit.service.controllers.SchedulerHandler;
 import us.dit.service.model.entities.Calendar;
 import us.dit.service.model.entities.Schedule;
 import us.dit.service.model.entities.Schedule.ScheduleStatus;
 import us.dit.service.model.entities.primarykeys.CalendarPK;
 import us.dit.service.model.repositories.CalendarRepository;
 import us.dit.service.model.repositories.ScheduleRepository;
+import us.dit.service.services.SchedulerService;
 
 import java.time.YearMonth;
 import java.util.HashMap;
@@ -24,7 +24,7 @@ import java.util.Optional;
 public class GenerateScheduleWorkItemHandler implements WorkItemHandler {
     private static final Logger logger = LogManager.getLogger();
     @Autowired
-    private SchedulerHandler schedulerHandler;
+    private SchedulerService schedulerService;
     @Autowired
     private ScheduleRepository scheduleRepository;
     @Autowired
@@ -63,7 +63,7 @@ public class GenerateScheduleWorkItemHandler implements WorkItemHandler {
         schedule.setCalendar(calendar.get());
         this.scheduleRepository.save(schedule);
 
-        this.schedulerHandler.startScheduleGeneration(calendar.get());
+        this.schedulerService.startScheduleGeneration(calendar.get());
 
         // Recuperamos el schedule para guardar su id en el proceso que sera el mes y año de ese calendario
         int scheduleMonth = this.scheduleRepository.findById(pk).get().getMonth();

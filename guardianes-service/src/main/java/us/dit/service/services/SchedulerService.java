@@ -1,10 +1,10 @@
-package us.dit.service.controllers;
+package us.dit.service.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import us.dit.service.model.dtos.scheduler.CalendarSchedulerDTO;
 import us.dit.service.model.dtos.scheduler.DoctorSchedulerDTO;
 import us.dit.service.model.dtos.scheduler.ScheduleSchedulerDTO;
@@ -37,8 +37,8 @@ import java.util.stream.Collectors;
  * @author miggoncan
  */
 @Slf4j
-@Component
-public class SchedulerHandler {
+@Service
+public class SchedulerService {
     @Autowired
     private ScheduleRepository scheduleRepository;
     @Autowired
