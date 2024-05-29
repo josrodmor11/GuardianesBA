@@ -1,14 +1,16 @@
 [
   [
-    "name" : "GenerarPlanificacion", 
+    "name" : "GenerarPlanificacion",
+    "displayName" : "GenerarPlanificacion",
+    "description" : "",
+    "defaultHandler" : "mvel: new us.dit.service.handlers.GenerateScheduleWorkItemHandler()",
+    "icon" : "GenerarPlanificacion.png"
     "parameters" : [ 
         "IdCalendarioFestivos" : new StringDataType(), 
         "DataBase" : new StringDataType()
     ], 
     "results" : [ 
         "IdPlanificacionProvisional" : new StringDataType()
-    ], 
-    "displayName" : "Generar Planificación", 
-    "icon" : "GenerarPlanificacion.png" 
+    ]
   ]
 ]

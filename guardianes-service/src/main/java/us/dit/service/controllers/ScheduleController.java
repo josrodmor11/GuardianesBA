@@ -1,43 +1,35 @@
-/**
- * 
- */
 package us.dit.service.controllers;
-
-import java.util.List;
-
-import javax.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.kie.server.api.model.instance.TaskSummary;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import us.dit.service.services.CalendarTaskService;
 
-import us.dit.service.services.TasksService;
+import javax.servlet.http.HttpSession;
 
-/**
- * TODO: El controlador para manejar las planificaciones (Agendas)
- */
 @Controller
 @RequestMapping("/guardianes")
 public class ScheduleController {
-	
-	@GetMapping("/schedules")
-	public String getAll(HttpSession session, Model model) {
-		return "schedule";
-	}
 
-	@GetMapping("/schedules/{scheduleId}")
-	
-	public String getScheduleById(@PathVariable Long taskId,HttpSession session) {
-	return "schedule";
-	}
-		
+    private static final Logger logger = LogManager.getLogger();
+
+    @Autowired
+    private CalendarTaskService calendarTaskService;
+
+    /**
+     * Este método mostrará el menú de planificación
+     *
+     * @param session objeto que maneja la sesion HTTP
+     * @return El html de la planificación
+     */
+    @GetMapping("/schedules")
+    public String menu(HttpSession session) {
+        logger.info("Devolvemos el html de la planificacion");
+        return "schedules";
+    }
+
+
 }
