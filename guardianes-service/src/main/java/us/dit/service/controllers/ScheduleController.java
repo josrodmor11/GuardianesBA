@@ -57,7 +57,7 @@ public class ScheduleController {
             YearMonth yearMonth = YearMonth.of(Integer.parseInt(yearMonthString[1]), Integer.parseInt(yearMonthString[0]));
             Optional<Schedule> schedule = this.schedulerTaskService.obtainSchedule(yearMonth);
             if (schedule.isPresent()) {
-                ScheduleView scheduleView = this.schedulerTaskService.setWeeks(schedule.get(), yearMonth);
+                ScheduleView scheduleView = this.schedulerTaskService.setView(schedule.get(), yearMonth);
                 model.addAttribute(SCHEDULE_ATTR, scheduleView);
                 model.addAttribute(YEAR_MONTH_ATTR, yearMonth.toString());
                 model.addAttribute(USE_LIST_ATTR, useListView);

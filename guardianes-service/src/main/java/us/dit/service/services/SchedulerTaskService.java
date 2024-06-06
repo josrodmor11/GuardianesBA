@@ -85,11 +85,12 @@ public class SchedulerTaskService {
         return this.scheduleRepository.findById(calendarPK);
     }
 
-    public ScheduleView setWeeks(Schedule schedule, YearMonth yearMonth) {
+    public ScheduleView setView(Schedule schedule, YearMonth yearMonth) {
         ScheduleView scheduleView = new ScheduleView();
         scheduleView.setYear(yearMonth.getYear());
         scheduleView.setMonth(yearMonth.getMonthValue());
         scheduleView.setDays(schedule.getDays());
+        scheduleView.setStatus(schedule.getStatus().name());
         logger.info("Mapping the schedule days to the weeks list");
         List<List<ScheduleDay>> weeks = new LinkedList<>();
         List<ScheduleDay> currWeek = new ArrayList<>(7);

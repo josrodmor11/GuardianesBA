@@ -140,46 +140,7 @@
         </li>
     </ul>
 
-    <!-- Bottom section with buttons -->
-    <div class="container">
-        <form id="confirmForm" method="POST" th:action="${schedule.links['confirm']}"
-              th:if="${#maps.containsKey(schedule.links, 'confirm')}">
-            <p class="d-none" id="confirmMessage" th:text="#{schedule.confirmMessage}"></p>
-            <button class="btn btn-success float-right m-2" th:text="#{confirm}" type="submit"></button>
-        </form>
-        <a class="btn btn-primary float-right m-2" data-target="#updateScheduleModal" data-toggle="modal"
-           role="button"
-           th:if="${#maps.containsKey(schedule.links, 'confirm')}" th:text="#{schedule.uploadEditedExcel}"></a>
-        <a class="btn btn-info float-right m-2" role="button" th:href="${schedule.links['scheduleDownload']}"
-           th:text="#{schedule.downloadAsExcel}"></a>
-    </div>
-</div>
 
-<div aria-hidden="true" aria-labelledby="updateScheduleModalLabel" class="modal fade" id="updateScheduleModal" role="dialog" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="updateScheduleModalLabel"
-                    th:text="#{schedule.updateScheduleTitle} + ' ' + ${yearMonth}"></h5>
-                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form enctype="multipart/form-data" method="POST" th:action="${schedule.links['self']}">
-                <div class="modal-body">
-                    <div class="custom-file">
-                        <input class="custom-file-input" id="scheduleFile" name="scheduleFile" required="true" type="file"/>
-                        <label class="custom-file-label" for="scheduleFile" th:text="#{chooseFile}"></label>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" data-dismiss="modal" th:text="#{cancel}" type="button"></button>
-                    <button class="btn btn-primary" th:text="#{confirm}" type="submit"></button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script crossorigin="anonymous"
