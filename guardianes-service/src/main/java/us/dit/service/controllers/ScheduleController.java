@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import us.dit.service.model.ScheduleView;
@@ -68,5 +69,18 @@ public class ScheduleController {
             logger.info("Devolvemos el html de error");
             return "error";
         }
+    }
+
+    @PostMapping("/schedules")
+    public String confirmSchedule(HttpSession session, @RequestParam(defaultValue = "false") Boolean confirmation) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails principal = (UserDetails) auth.getPrincipal();
+        logger.debug("Datos de usuario (principal)" + principal);
+        if (confirmation) {
+            logger.info("El usuario ya ha confirmado la planificacion");
+            this.schedulerTaskService.initAndCompleteValidateScheduleTask(principal.getUsername(),
+                    (Long) session.getAttribute("tareaValidarPlanificacionId"));
+        }
+        return "redirect:/";
     }
 }

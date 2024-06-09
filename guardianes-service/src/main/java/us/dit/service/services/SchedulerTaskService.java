@@ -50,7 +50,7 @@ public class SchedulerTaskService {
      * @param principal Cadena que representa al usuario
      */
     public void obtainValidateScheduleTask(HttpSession session, String principal) {
-        logger.info("Obtenemos la tarea de calendario");
+        logger.info("Obtenemos la tarea de validar planificacion");
         List<TaskSummary> taskList = this.tasksService.findPotential(principal);
         logger.debug("Las tareas son " + taskList);
 
@@ -67,6 +67,34 @@ public class SchedulerTaskService {
             logger.debug("El id de la tarea es " + validateScheduleTaskId);
             session.setAttribute("tareaValidarPlanificacionId", validateScheduleTaskId);
         }
+    }
+
+    public void initAndCompleteValidateScheduleTask(String principal, Long taskId) {
+        UserTaskServicesClient userClient = kieUtils.getUserTaskServicesClient();
+        if (userClient.findTaskById(taskId).getStatus().equals("Ready")) {
+            logger.info("Reclamamos la tarea de validar planificacion con id " + taskId);
+            userClient.claimTask(containerId, taskId, principal);
+            logger.debug("Comenzamos el completado de la tarea de validar planificacion con id " + taskId);
+            userClient.startTask(containerId, taskId, principal);
+        }
+        String yearMonthString = this.obtainInputParameters(taskId);
+        String[] splitYearMonth = this.obtainYearMonth(yearMonthString);
+        YearMonth yearMonth = YearMonth.of(Integer.parseInt(splitYearMonth[1]), Integer.parseInt(splitYearMonth[0]));
+        Optional<Schedule> schedule = this.obtainSchedule(yearMonth);
+        if (schedule.isPresent()) {
+            if (schedule.get().getStatus() == Schedule.ScheduleStatus.PENDING_CONFIRMATION) {
+                schedule.get();
+            } else {
+                throw new RuntimeException("Estado de la planificacion no valido");
+            }
+            schedule.get().setStatus(Schedule.ScheduleStatus.CONFIRMED);
+            this.scheduleRepository.save(schedule.get());
+        }
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("idPlanificacionValida", yearMonthString);
+        logger.info("Se termina la tarea de Validar planificacion");
+        userClient.completeTask(containerId, taskId, principal, params);
     }
 
     public String obtainInputParameters(Long taskId) {

@@ -139,7 +139,16 @@
             </div>
         </li>
     </ul>
-
+    <!-- Bottom section with buttons -->
+    <div class="container">
+        <form action="/guardianes/schedules" id="confirmForm" method="POST">
+            <p class="d-none" id="confirmMessage" th:text="#{schedule.confirmMessage}"></p>
+            <!-- Campo oculto para el parámetro confirmation -->
+            <input name="confirmation" type="hidden" value="true">
+            <button class="btn btn-success float-right m-2" th:text="#{confirm}" type="submit"></button>
+        </form>
+    </div>
+</div>
 
 
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
