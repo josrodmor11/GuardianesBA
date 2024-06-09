@@ -92,7 +92,7 @@ public class SchedulerTaskService {
         }
 
         Map<String, Object> params = new HashMap<>();
-        params.put("idPlanificacionValida", yearMonthString);
+        params.put("Id_planificacion_valida", yearMonthString);
         logger.info("Se termina la tarea de Validar planificacion");
         userClient.completeTask(containerId, taskId, principal, params);
     }
