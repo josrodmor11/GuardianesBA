@@ -35,10 +35,11 @@ public class InformDoctorsWorkItemHandler implements WorkItemHandler {
     @Autowired
     private calendarioGeneral calDAVService;
 
+    private boolean doctorsInformed = false;
+
     @Override
     public void executeWorkItem(WorkItem workItem, WorkItemManager workItemManager) {
         logger.info("Entramos en la tarea automatica Informar Medicos");
-        boolean doctorsInformed = true;
         String idPlanificacionValidada = (String) workItem.getParameter("idPlanificacionValida");
         logger.info("La planficacion valida es " + idPlanificacionValidada);
         String[] yearMonthString = idPlanificacionValidada.split("-");
@@ -49,15 +50,16 @@ public class InformDoctorsWorkItemHandler implements WorkItemHandler {
             logger.info("Empezamos a informar a los medicos");
             try {
                 this.calDAVService.setHorario(schedule.get());
+                this.doctorsInformed = true;
             } catch (ValidationException | IOException | GeneralSecurityException | InterruptedException
                      | URISyntaxException | ParserException | CalDAV4JException | MessagingException e) {
-                doctorsInformed = false;
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
         Map<String, Object> params = new HashMap<>();
-        params.put("procesoFinalizado", doctorsInformed);
+        logger.info("Los doctores han sido informados?" + this.doctorsInformed);
+        params.put("procesoFinalizado", this.doctorsInformed);
+        logger.info("Se completa el proceso");
         workItemManager.completeWorkItem(workItem.getId(), params);
     }
 

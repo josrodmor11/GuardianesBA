@@ -27,7 +27,7 @@ import java.util.Properties;
 public class EmailService {
 
     private final Properties properties = new Properties();
-    @Value("${email.loggin}")
+    @Value("${email.login}")
     private String username;
     @Value("${email.password}")
     private String password;
@@ -51,7 +51,7 @@ public class EmailService {
         properties.put("mail.smtp.password", password);
         properties.put("mail.smtp.starttls.enable", "true");
         properties.put("mail.smtp.ssl.trust", host);
-        log.info("Configuracion servicio email completad");
+        log.info("Configuracion servicio email completado");
     }
 
     /**
