@@ -61,7 +61,10 @@ public class DefaultWebSecurityConfig {
                         .permitAll())
                 .exceptionHandling((exceptionHandling) -> exceptionHandling.accessDeniedPage("/access-denied.html"))
                 .csrf((csrf) -> csrf.disable()).httpBasic(withDefaults()).cors(withDefaults())
-                .formLogin(withDefaults());
+                .formLogin(withDefaults())
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/");
         return http.build();
     }
 

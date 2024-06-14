@@ -12,11 +12,8 @@
     <script th:src="@{/js/index.js}"></script>
 </head>
 <body>
-<div class="topnav">
-    <a class="active" th:href="@{/}">Menu principal</a>
-    <a th:href="@{/guardianes/calendars}">Establecer festivos</a>
-    <a th:href="@{/guardianes/schedules}">Validar Planificacion</a>
-</div>
+<div th:include="navbar.html"></div>
+
 <div class="header">
     <h1>Bienvenido a su aplicación de negocios GUARDIANES</h1>
 </div>
