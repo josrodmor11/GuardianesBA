@@ -2,17 +2,29 @@
 <!-- Ayuda con edición html https://www.w3schools.com/howto/default.asp -->
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1" name="viewport">
-  <link rel="stylesheet" th:href="@{/css/index-styles.css}">
+  <link rel="stylesheet" th:href="@{/css/navbar-styles.css}">
 </head>
 <body>
+<nav th:fragment="topnav">
+  <div class="topnav">
+    <div class="navbar-user">
+      <!-- Si hay usuario autenticado se muestra -->
+      <span th:if="${#authentication != null}">
+        <span th:text="'¡' + #{welcome.message} + ' ' + ${#authentication.name} + '!'"></span>
+      </span>
+      <!-- Si no lo hay se muestra otro mensaje -->
+      <span th:if="${#authentication == null}">
+        <span th:text="#{login.user.notAuthenticated}"></span>
+      </span>
+    </div>
+    <a class="active" th:href="@{/}">Menú principal</a>
+    <a th:href="@{/guardianes/calendars}">Establecer festivos</a>
+    <a th:href="@{/guardianes/schedules}">Validar Planificación</a>
+    <a th:href="@{/logout}">Cerrar sesión</a>
+  </div>
+</nav>
 
-<div class="topnav">
-  <a class="active" th:href="@{/}">Menú principal</a>
-  <a th:href="@{/guardianes/calendars}">Establecer festivos</a>
-  <a th:href="@{/guardianes/schedules}">Validar Planificación</a>
-  <a th:href="@{/logout}">Cerrar sesión</a>
-</div>
 </body>
 </html>

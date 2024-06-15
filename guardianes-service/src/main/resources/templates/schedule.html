@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <!-- Required meta tags -->
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no"
           name="viewport">
 
@@ -11,11 +11,12 @@
           href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
           rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/navbar-styles.css}">
 
     <title th:text="#{schedule.title} + ' ' + ${yearMonth}"></title>
 </head>
 <body>
-<div th:include="navbar.html"></div>
+<div th:replace="navbar :: topnav"></div>
 
 <div class="container">
     <div class="container my-2">
