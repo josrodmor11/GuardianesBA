@@ -57,7 +57,7 @@ public class InformDoctorsWorkItemHandler implements WorkItemHandler {
             }
         }
         Map<String, Object> params = new HashMap<>();
-        logger.info("Los doctores han sido informados?" + this.doctorsInformed);
+        logger.info("¿Los doctores han sido informados? " + this.doctorsInformed);
         params.put("procesoFinalizado", this.doctorsInformed);
         logger.info("Se completa el proceso");
         workItemManager.completeWorkItem(workItem.getId(), params);
