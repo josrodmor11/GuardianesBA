@@ -91,9 +91,9 @@ public class DefaultWebSecurityConfig {
         UserDetails kieserver = User.withUsername("kieserver").password(encoder.encode("kieserver")).roles("kie-server")
                 .build();
         //Usuario que podrá añadir festivos en el calendario
-        UserDetails administrativo = User.withUsername(adminusername).password(encoder.encode(adminuserpassword)).roles("process-admin").build();
+        UserDetails administrativo = User.withUsername(adminusername).password(encoder.encode(adminuserpassword)).roles("ADMINISTRADOR").build();
         //Usuario que podrá añadir festivos y validar calendario
-        UserDetails gestor = User.withUsername(gestusername).password(encoder.encode(gestuserpassword)).roles("admin").build();
+        UserDetails gestor = User.withUsername(gestusername).password(encoder.encode(gestuserpassword)).roles("GESTOR").build();
 
         return new InMemoryUserDetailsManager(wbadmin, user, kieserver, guardianes, administrativo, gestor);
     }

@@ -50,7 +50,7 @@ public class ScheduleController {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
-        if (roles.contains("ROLE_admin")) {
+        if (roles.contains("ROLE_GESTOR")) {
             this.schedulerTaskService.obtainValidateScheduleTask(session, principal.getUsername());
             logger.info("Tarea validar planificacion iniciada");
             String planificacionProvisional = this.schedulerTaskService.obtainInputParameters((Long) session.getAttribute("tareaValidarPlanificacionId"));

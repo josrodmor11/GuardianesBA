@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- Ayuda con edición html https://www.w3schools.com/howto/default.asp -->
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:sec="http://www.thymeleaf.org/extras/springsecurity5" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1" name="viewport">
@@ -19,9 +19,9 @@
         <span th:text="#{login.user.notAuthenticated}"></span>
       </span>
     </div>
-    <a class="active" th:href="@{/}">Menú principal</a>
+    <a th:href="@{/}">Menú principal</a>
     <a th:href="@{/guardianes/calendars}">Establecer festivos</a>
-    <a th:href="@{/guardianes/schedules}">Validar Planificación</a>
+    <a sec:authorize="hasRole('GESTOR')" th:href="@{/guardianes/schedules}">Validar Planificación</a>
     <a th:href="@{/logout}">Cerrar sesión</a>
   </div>
 </nav>

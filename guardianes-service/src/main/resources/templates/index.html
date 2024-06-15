@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:sec="http://www.thymeleaf.org/extras/springsecurity5" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Bienvenido a su aplicación de negocios GUARDIANES</title>
     <meta charset="UTF-8"/>
@@ -29,7 +29,7 @@
     <div class="tutorial" id="tutorial" style="display: none;">
         <h3>Sigue estos pasos para realizar la planificación del próximo mes</h3>
         <p>Paso 1: Haz clic en "Establecer festivos" para establecer los días festivos y que se genere la planificación del próximo mes.</p>
-        <p>Paso 2: Después de establecer los festivos, haz clic en "Validar planificación" para confirmar la planificacion.</p>
+        <p>Paso 2: Si eres gestor. Después de establecer los festivos, haz clic en "Validar planificación" para confirmar la planificacion.</p>
     </div>
 
     <div class="card-full">
@@ -38,7 +38,7 @@
     <div class="card-full">
         <a th:href="@{/guardianes/calendars}">Establecer festivos</a>
     </div>
-    <div class="card-full">
+    <div class="card-full" sec:authorize="hasRole('GESTOR')">
         <a th:href="@{/guardianes/schedules}">Validar Planificacion</a>
     </div>
 
