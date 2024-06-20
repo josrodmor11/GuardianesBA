@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:sec="http://www.thymeleaf.org/extras/springsecurity5" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Bienvenido a su aplicación de negocios GUARDIANES</title>
     <meta charset="UTF-8"/>
@@ -9,14 +9,12 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
     <link rel="stylesheet" th:href="@{/css/index-styles.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar-styles.css}">
     <script th:src="@{/js/index.js}"></script>
 </head>
 <body>
-<div class="topnav">
-    <a class="active" th:href="@{/}">Menu principal</a>
-    <a th:href="@{/guardianes/calendars}">Establecer festivos</a>
-    <a th:href="@{/guardianes/schedules}">Validar Planificacion</a>
-</div>
+<div th:replace="navbar :: topnav"></div>
+
 <div class="header">
     <h1>Bienvenido a su aplicación de negocios GUARDIANES</h1>
 </div>
@@ -31,7 +29,7 @@
     <div class="tutorial" id="tutorial" style="display: none;">
         <h3>Sigue estos pasos para realizar la planificación del próximo mes</h3>
         <p>Paso 1: Haz clic en "Establecer festivos" para establecer los días festivos y que se genere la planificación del próximo mes.</p>
-        <p>Paso 2: Después de establecer los festivos, haz clic en "Validar planificación" para comprobar que la planificación es correcta y cambiarla si es necesario.</p>
+        <p>Paso 2: Si eres gestor. Después de establecer los festivos, haz clic en "Validar planificación" para confirmar la planificacion.</p>
     </div>
 
     <div class="card-full">
@@ -40,7 +38,7 @@
     <div class="card-full">
         <a th:href="@{/guardianes/calendars}">Establecer festivos</a>
     </div>
-    <div class="card-full">
+    <div class="card-full" sec:authorize="hasRole('GESTOR')">
         <a th:href="@{/guardianes/schedules}">Validar Planificacion</a>
     </div>
 

@@ -59,7 +59,7 @@ public class CalendarController {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
-        if (roles.contains("ROLE_admin") || roles.contains("ROLE_process-admin")) {
+        if (roles.contains("ROLE_ADMINISTRADOR") || roles.contains("ROLE_GESTOR")) {
             //Que se inicie la tarea
             List<TaskSummary> tasksObtained = this.calendarTaskService.obtainCalendarTask(session, principal.getUsername());
             logger.info("Tarea iniciada");

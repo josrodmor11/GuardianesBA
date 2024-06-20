@@ -1,16 +1,30 @@
 <!DOCTYPE html>
 <!-- Ayuda con edición html https://www.w3schools.com/howto/default.asp -->
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:sec="http://www.thymeleaf.org/extras/springsecurity5" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta content="width=device-width, initial-scale=1" name="viewport">
-  <link rel="stylesheet" th:href="@{/css/index-styles.css}">
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <link rel="stylesheet" th:href="@{/css/navbar-styles.css}">
 </head>
 <body>
+<nav th:fragment="topnav">
+  <div class="topnav">
+    <div class="navbar-user">
+      <!-- Si hay usuario autenticado se muestra -->
+      <span th:if="${#authentication != null}">
+        <span th:text="'¡' + #{welcome.message} + ' ' + ${#authentication.name} + '!'"></span>
+      </span>
+      <!-- Si no lo hay se muestra otro mensaje -->
+      <span th:if="${#authentication == null}">
+        <span th:text="#{login.user.notAuthenticated}"></span>
+      </span>
+    </div>
+    <a th:href="@{/}">Menú principal</a>
+    <a th:href="@{/guardianes/calendars}">Establecer festivos</a>
+    <a sec:authorize="hasRole('GESTOR')" th:href="@{/guardianes/schedules}">Validar Planificación</a>
+    <a th:href="@{/logout}">Cerrar sesión</a>
+  </div>
+</nav>
 
-<div class="topnav">
-  <a class="active" th:href="@{/}">Menu principal</a>
-  <a th:href="@{/guardianes/calendars}">Establecer festivos</a>
-  <a th:href="@{/guardianes/schedules}">Validar Planificacion</a>
-</div>
 </body>
 </html>

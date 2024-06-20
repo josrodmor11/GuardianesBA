@@ -1,0 +1,18 @@
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: rgb(255,255,255);
+}
+.table{
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: rgb(128, 0, 0);
+  color: white;
+  text-align: center;
+}
+
+#datepicker .datepicker {
+  margin: 0 auto;
+}
+
+
