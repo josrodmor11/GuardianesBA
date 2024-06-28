@@ -1,7 +1,9 @@
 # Proyecto GuardianesBA
 
 Este proyecto es una aplicación de negocios jBPM con Spring Boot
+
 Actualmente es una versión beta que gestiona únicamente el proceso de planificación (automática) de tareas asistenciales en un servicio clínico
+
 Está desarrollado en el Departamento de Ingeniería Telemática de la Universidad de Sevilla
 
 ## Licencia
