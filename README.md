@@ -1,3 +1,9 @@
+![GitHub top Language](https://img.shields.io/github/languages/top/tfg-projects-dit-us/GuardianesBA)
+![GitHub forks](https://img.shields.io/github/forks/tfg-projects-dit-us/GuardianesBA?style=social)
+![GitHub contributors](https://img.shields.io/github/contributors/tfg-projects-dit-us/GuardianesBA)
+![GitHub Repo stars](https://img.shields.io/github/stars/tfg-projects-dit-us/GuardianesBA?style=social)
+![GitHub repo size](https://img.shields.io/github/repo-size/tfg-projects-dit-us/GuardianesBA)
+![GitHub watchers](https://img.shields.io/github/watchers/tfg-projects-dit-us/GuardianesBA)
 # Proyecto GuardianesBA
 
 Este proyecto es una aplicación de negocios jBPM con Spring Boot
